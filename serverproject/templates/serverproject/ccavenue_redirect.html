@@ -1,0 +1,11 @@
+<html>
+<head>
+<title>Submitting to CCAvenue</title>
+</head>
+<body onload="document.redirect.submit()">
+    <form name="redirect" action="https://secure.ccavenue.com/transaction/transaction.do?command=initiateTransaction" method="post">
+        <input type=hidden name=encRequest value="{{ enc_request }}">
+        <input type=hidden name=access_code value="{{ access_code }}">
+    </form>
+</body>
+</html>

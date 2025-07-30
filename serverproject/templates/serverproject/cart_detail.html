@@ -1,0 +1,56 @@
+{% extends 'serverproject/base.html' %}
+{% block title %}Your Shopping Cart{% endblock %}
+
+{% block content %}
+<div class="container mx-auto mt-24 px-4">
+    <h1 class="text-3xl font-bold mb-6">Your Shopping Cart</h1>
+    <div class="overflow-x-auto">
+        <table class="table w-full">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Remove</th>
+                    <th class="text-right">Unit price</th>
+                    <th class="text-right">Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart %}
+                    {% with product=item.product %}
+                        <tr>
+                            <td>{{ product.name }}</td>
+                            <td class="flex items-center">
+                                <form action="{% url 'cart_add' product.id %}" method="post" class="mr-2">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="quantity" value="{{ item.quantity|add:'-1' }}">
+                                    <input type="hidden" name="update" value="True">
+                                    <button type="submit" class="btn btn-ghost btn-sm">-</button>
+                                </form>
+                                {{ item.quantity }}
+                                <form action="{% url 'cart_add' product.id %}" method="post" class="ml-2">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="quantity" value="{{ item.quantity|add:'1' }}">
+                                    <input type="hidden" name="update" value="True">
+                                    <button type="submit" class="btn btn-ghost btn-sm">+</button>
+                                </form>
+                            </td>
+                            <td><a href="{% url 'cart_remove' product.id %}" class="text-red-500">Remove</a></td>
+                            <td class="text-right">₹{{ item.price }}</td>
+                            <td class="text-right">₹{{ item.total_price }}</td>
+                        </tr>
+                    {% endwith %}
+                {% endfor %}
+                <tr class="font-bold">
+                    <td colspan="4">Total</td>
+                    <td class="text-right">₹{{ cart.get_total_price }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="mt-6 text-right">
+        <a href="{% url 'pricing' %}" class="btn btn-outline">Continue shopping</a>
+        <a href="{% url 'order_create' %}" class="btn btn-primary">Checkout</a>
+    </div>
+</div>
+{% endblock %}

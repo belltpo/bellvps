@@ -1,0 +1,65 @@
+{% extends 'serverproject/base.html' %}
+
+{% block title %}Checkout{% endblock %}
+
+{% block content %}
+<div class="container mx-auto mt-24 px-4 py-10">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div class="lg:col-span-2">
+            <h1 class="text-3xl font-bold mb-6">Shipping Address</h1>
+            <div class="card bg-base-100 shadow-lg">
+                <div class="card-body">
+                    <form method="post" class="space-y-4">
+                        {% csrf_token %}
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text">City</span>
+                            </label>
+                            {{ form.city }}
+                        </div>
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text">State</span>
+                            </label>
+                            {{ form.state }}
+                        </div>
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text">Phone</span>
+                            </label>
+                            {{ form.phone }}
+                        </div>
+                        {{ form.as_p }}
+                        <div class="mt-6">
+                            <button type="submit" class="btn btn-primary w-full">Proceed to Payment</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="lg:col-span-1">
+            <h1 class="text-3xl font-bold mb-6">Your Order</h1>
+            <div class="card bg-base-100 shadow-lg">
+                <div class="card-body">
+                    <ul class="divide-y divide-base-300">
+                        {% for item in cart %}
+                        <li class="py-4 flex justify-between items-center">
+                            <div>
+                                <p class="font-semibold">{{ item.product.name }}</p>
+                                <p class="text-sm text-gray-500">Quantity: {{ item.quantity }}</p>
+                            </div>
+                            <span class="font-semibold">₹{{ item.total_price }}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    <div class="divider"></div>
+                    <div class="flex justify-between font-bold text-xl">
+                        <span>Total</span>
+                        <span>₹{{ cart.get_total_price }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
