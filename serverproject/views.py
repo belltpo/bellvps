@@ -1,19 +1,20 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Product, Order, OrderItem
+from .models import Plan, Order, OrderItem
 from .forms import OrderCreateForm
 from .cart import Cart
 from django.conf import settings
-from .ccavenue_utils import encrypt, decrypt
+import razorpay
 from django.views.decorators.csrf import csrf_exempt
-import time
-from urllib.parse import quote
+from django.urls import reverse
+from django.http import JsonResponse
+import json
 
 def index(request):
     return render(request, 'serverproject/index.html')
 
 def pricing(request):
-    products = Product.objects.all()
-    return render(request, 'serverproject/pricing.html', {'products': products})
+    plans = Plan.objects.prefetch_related('features', 'specifications').all()
+    return render(request, 'serverproject/pricing.html', {'plans': plans})
 
 def features(request):
     return render(request, 'serverproject/features.html')
@@ -24,26 +25,26 @@ def about(request):
 def contact(request):
     return render(request, 'serverproject/contact.html')
 
-def cart_add(request, product_id):
+def cart_add(request, plan_id):
     cart = Cart(request)
-    product = get_object_or_404(Product, id=product_id)
+    plan = get_object_or_404(Plan, id=plan_id)
     quantity = int(request.POST.get('quantity', 1))
     update_quantity = request.POST.get('update', False)
 
     if update_quantity:
         if quantity > 0:
-            cart.add(product=product, quantity=quantity, update_quantity=True)
+            cart.add(plan=plan, quantity=quantity, update_quantity=True)
         else:
-            cart.remove(product)
+            cart.remove(plan)
     else:
-        cart.add(product=product, quantity=quantity)
+        cart.add(plan=plan, quantity=quantity)
 
     return redirect('cart_detail')
 
-def cart_remove(request, product_id):
+def cart_remove(request, plan_id):
     cart = Cart(request)
-    product = get_object_or_404(Product, id=product_id)
-    cart.remove(product)
+    plan = get_object_or_404(Plan, id=plan_id)
+    cart.remove(plan)
     return redirect('cart_detail')
 
 def cart_detail(request):
@@ -58,75 +59,117 @@ def order_create(request):
             order = form.save()
             for item in cart:
                 OrderItem.objects.create(order=order,
-                                         product=item['product'],
-                                         price=item['price'],
-                                         quantity=item['quantity'])
+                                       plan=item['plan'],
+                                       price=item['price'],
+                                       quantity=item['quantity'])
             
-            # Get total price before clearing the cart
-            total_price = cart.get_total_price()
+            # Get total cost
+            total_cost = order.get_total_cost()
+
+            # Check if total cost is below Razorpay's minimum
+            if total_cost < 1:
+                form.add_error(None, 'The total amount must be at least ₹1.00 to proceed with payment.')
+                # Re-add items to cart since we cleared it prematurely
+                for item in OrderItem.objects.filter(order=order):
+                    cart.add(plan=item.plan, quantity=item.quantity)
+                return render(request, 'serverproject/order_create.html', {'cart': cart, 'form': form})
+
             cart.clear()
 
-            # Prepare data for CCAvenue, ensuring no empty values are sent
-            tid = str(int(time.time()))
-            merchant_params = {
-                'tid': tid,
-                'merchant_id': settings.CCAVENUE_MERCHANT_ID,
-                'order_id': tid, 
-                'amount': str(total_price),
+            # Initialize Razorpay client
+            client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+
+            # Create Razorpay order
+            razorpay_order = client.order.create({
+                'amount': int(total_cost * 100),  # Amount in paise
                 'currency': 'INR',
-                'redirect_url': settings.CCAVENUE_REDIRECT_URL,
-                'cancel_url': settings.CCAVENUE_CANCEL_URL,
-                'language': 'EN',
-                'billing_name': f'{order.first_name} {order.last_name}',
-                'billing_address': order.address,
-                'billing_city': order.city,
-                'billing_state': order.state,
-                'billing_zip': order.postal_code,
-                'billing_country': 'India',
-                'billing_tel': order.phone,
-                'billing_email': order.email,
+                'receipt': f'order_rcptid_{order.id}',
+                'payment_capture': 1
+            })
+
+            # Store Razorpay order ID in the order
+            order.razorpay_order_id = razorpay_order['id']
+            order.save()
+
+            context = {
+                'order': order,
+                'razorpay_order_id': razorpay_order['id'],
+                'razorpay_key_id': settings.RAZORPAY_KEY_ID,
+                'amount': int(total_cost * 100)
             }
-            
-            # Filter out any keys with empty or None values and URL-encode the values
-            merchant_data = '&'.join([f'{key}={quote(str(value))}' for key, value in merchant_params.items() if value is not None and value != ''])
-
-            print('CCAvenue Merchant Data:', merchant_data)
-
-            enc_request = encrypt(merchant_data, settings.CCAVENUE_WORKING_KEY)
-            
-            return render(request, 'serverproject/ccavenue_redirect.html', {'enc_request': enc_request, 'access_code': settings.CCAVENUE_ACCESS_CODE})
-
+            return render(request, 'serverproject/payment.html', context)
     else:
         form = OrderCreateForm()
     return render(request, 'serverproject/order_create.html', {'cart': cart, 'form': form})
 
-@csrf_exempt
-def ccavenue_success(request):
+def payment_verification(request):
     if request.method == 'POST':
-        enc_response = request.POST.get('encResp')
-        dec_response = decrypt(enc_response, settings.CCAVENUE_WORKING_KEY)
-        
-        # Parse the decrypted data
-        data = {key: val for key, val in [pair.split('=') for pair in dec_response.split('&')]}
-
-        order_id = data.get('order_id')
-        order_status = data.get('order_status')
-
         try:
-            order = Order.objects.get(id=order_id)
-            if order_status == 'Success':
-                order.paid = True
-                order.ccavenue_order_id = data.get('tracking_id')
-                order.save()
-                return render(request, 'serverproject/order_created.html', {'order': order})
-            else:
-                return render(request, 'serverproject/payment_failed.html', {'order': order, 'status': order_status})
-        except Order.DoesNotExist:
-            # Handle error: Order not found
-            pass
-    return redirect('index') # Or some error page
+            data = json.loads(request.body)
+            client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+            
+            razorpay_payment_id = data.get('razorpay_payment_id', '')
+            razorpay_order_id = data.get('razorpay_order_id', '')
+            razorpay_signature = data.get('razorpay_signature', '')
 
-@csrf_exempt
-def ccavenue_cancel(request):
-    # You can render a template here to inform the user that the payment was cancelled.
-    return render(request, 'serverproject/payment_failed.html', {'status': 'Cancelled by user'})
+            params_dict = {
+                'razorpay_order_id': razorpay_order_id,
+                'razorpay_payment_id': razorpay_payment_id,
+                'razorpay_signature': razorpay_signature
+            }
+
+            client.utility.verify_payment_signature(params_dict)
+
+            try:
+                order = Order.objects.get(razorpay_order_id=razorpay_order_id)
+                order.razorpay_payment_id = razorpay_payment_id
+                order.razorpay_signature = razorpay_signature
+                order.status = 'paid'
+                order.save()
+                
+                request.session['order_id'] = order.id
+                return JsonResponse({'success': True, 'redirect_url': reverse('payment_success')})
+            except Order.DoesNotExist:
+                return JsonResponse({'success': False, 'redirect_url': reverse('payment_failed')})
+
+        except Exception as e:
+            try:
+                order = Order.objects.get(razorpay_order_id=razorpay_order_id)
+                order.status = 'failed'
+                order.save()
+            except Order.DoesNotExist:
+                pass
+            return JsonResponse({'success': False, 'redirect_url': reverse('payment_failed')})
+            
+    return JsonResponse({'success': False, 'redirect_url': reverse('payment_failed')})
+
+def payment_success(request):
+    order_id = request.session.get('order_id')
+    order = get_object_or_404(Order, id=order_id) if order_id else None
+    return render(request, 'serverproject/payment_success.html', {'order': order})
+
+def payment_failed(request):
+    return render(request, 'serverproject/payment_failed.html')
+
+def payment_cancelled(request, order_id):
+    try:
+        order = Order.objects.get(id=order_id)
+        if order.status == 'pending': 
+            order.status = 'cancelled'
+            order.save()
+    except Order.DoesNotExist:
+        pass
+    return render(request, 'serverproject/payment_cancelled.html')
+
+# Policy Pages
+def terms_conditions(request):
+    return render(request, 'serverproject/terms_conditions.html')
+
+def refund_policy(request):
+    return render(request, 'serverproject/refund_policy.html')
+
+def privacy_policy(request):
+    return render(request, 'serverproject/privacy_policy.html')
+
+def support_policy(request):
+    return render(request, 'serverproject/support_policy.html')

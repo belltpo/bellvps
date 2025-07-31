@@ -1,0 +1,22 @@
+{% extends 'serverproject/base.html' %}
+
+{% block title %}Payment Successful{% endblock %}
+
+{% block content %}
+<div class="hero min-h-[calc(100vh-4rem)] bg-base-200">
+    <div class="hero-content text-center">
+        <div class="max-w-md p-8 bg-base-100 rounded-lg shadow-xl">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-green-500 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <h1 class="text-3xl font-bold text-gray-800 mt-4">Thank You for Connecting with BellGlobal!</h1>
+            <p class="mt-4 text-lg">We're excited to have you on board.</p>
+            <div class="mt-4 text-gray-600 space-y-2">
+                <p>Your virtual server will be allocated within the next 24 hours, along with the broker of your choice.</p>
+                <p>You'll receive all the necessary details and credentials via email shortly.</p>
+            </div>
+            <a href="{% url 'index' %}" class="btn btn-primary mt-6">Return to Home</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,6 +1,6 @@
 from decimal import Decimal
 from django.conf import settings
-from .models import Product
+from .models import Plan
 
 class Cart(object):
 
@@ -15,49 +15,47 @@ class Cart(object):
             cart = self.session[settings.CART_SESSION_ID] = {}
         self.cart = cart
 
-    def add(self, product, quantity=1, update_quantity=False):
+    def add(self, plan, quantity=1, update_quantity=False):
         """
-        Add a product to the cart or update its quantity.
+        Add a plan to the cart or update its quantity.
         """
-        product_id = str(product.id)
-        if product_id not in self.cart:
-            self.cart[product_id] = {'quantity': 0,
-                                     'price': str(product.price)}
+        plan_id = str(plan.id)
+        if plan_id not in self.cart:
+            self.cart[plan_id] = {'quantity': 0,
+                                     'price': str(plan.price)}
         
         if update_quantity:
-            self.cart[product_id]['quantity'] = quantity
+            self.cart[plan_id]['quantity'] = quantity
         else:
-            self.cart[product_id]['quantity'] += quantity
+            self.cart[plan_id]['quantity'] += quantity
         
         self.save()
 
     def save(self):
-        # update the session cart
-        self.session[settings.CART_SESSION_ID] = self.cart
         # mark the session as "modified" to make sure it gets saved
         self.session.modified = True
 
-    def remove(self, product):
+    def remove(self, plan):
         """
-        Remove a product from the cart.
+        Remove a plan from the cart.
         """
-        product_id = str(product.id)
-        if product_id in self.cart:
-            del self.cart[product_id]
+        plan_id = str(plan.id)
+        if plan_id in self.cart:
+            del self.cart[plan_id]
             self.save()
 
     def __iter__(self):
         """
-        Iterate over the items in the cart and get the products
+        Iterate over the items in the cart and get the plans
         from the database.
         """
-        product_ids = self.cart.keys()
-        products = Product.objects.filter(id__in=product_ids)
+        plan_ids = self.cart.keys()
+        plans = Plan.objects.filter(id__in=plan_ids)
 
-        for product in products:
+        for plan in plans:
             # Create a copy of the cart item to avoid modifying the session
-            item = self.cart[str(product.id)].copy()
-            item['product'] = product
+            item = self.cart[str(plan.id)].copy()
+            item['plan'] = plan
             item['price'] = Decimal(item['price'])
             item['total_price'] = item['price'] * item['quantity']
             yield item

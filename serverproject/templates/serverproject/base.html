@@ -7,6 +7,7 @@
   <title>{% block title %}Bell Server{% endblock %}</title>
   <link href="https://cdn.jsdelivr.net/npm/daisyui@3.9.4/dist/full.css" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="{% static 'serverproject/css/custom.css' %}">
   <link rel="icon" href="{% static 'serverproject/images/icon.png' %}" type="image/png">
   <script>
     tailwind.config = {
@@ -37,13 +38,25 @@
 </head>
 <body class="bg-base-100 text-base-content font-sans min-h-screen flex flex-col">
   <!-- Navbar -->
-  <div class="navbar bg-base-100 fixed top-0 left-0 right-0 z-50 shadow-md">
+  <nav class="navbar bg-base-100 fixed top-0 left-0 right-0 z-50 shadow-md">
     <div class="navbar-start">
-      <a class="btn btn-ghost normal-case text-xl font-bold flex items-center gap-2">
+      <div class="dropdown">
+        <label tabindex="0" class="btn btn-ghost lg:hidden">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
+        </label>
+        <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+          <li><a href="{% url 'index' %}" class="font-medium">Home</a></li>
+          <li><a href="{% url 'pricing' %}" class="font-medium">Pricing</a></li>
+          <li><a href="{% url 'features' %}" class="font-medium">Features</a></li>
+          <li><a href="{% url 'about' %}" class="font-medium">About</a></li>
+          <li><a href="{% url 'contact' %}" class="font-medium">Contact</a></li>
+        </ul>
+      </div>
+      <a class="btn btn-ghost normal-case text-xl font-bold flex items-center gap-2" href="{% url 'index' %}">
         <div class="p-1 rounded dark:bg-white">
           <img
             src="https://www.bellglobal.in/wp-content/uploads/2021/02/New-Logo-BellGlobal.png"
-            alt="BellGlobal Logo"
+            alt="Bell Server Logo"
             class="h-8 w-auto"
           />
         </div>
@@ -59,22 +72,20 @@
       </ul>
     </div>
     <div class="navbar-end">
-       <div class="dropdown dropdown-end">
+      <div class="dropdown dropdown-end">
         <label tabindex="0" class="btn btn-ghost btn-circle">
           <div class="indicator">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
             {% with total_items=cart|length %}
-                {% if total_items > 0 %}
-                    <span class="badge badge-sm indicator-item">{{ total_items }}</span>
-                {% endif %}
+                <span class="badge badge-sm indicator-item">{{ total_items }}</span>
             {% endwith %}
           </div>
         </label>
-        <div tabindex="0" class="mt-3 card card-compact dropdown-content w-52 bg-base-100 shadow">
+        <div tabindex="0" class="mt-3 z-[1] card card-compact dropdown-content w-52 bg-base-100 shadow">
           <div class="card-body">
             {% with total_items=cart|length %}
                 <span class="font-bold text-lg">{{ total_items }} Item{{ total_items|pluralize }}</span>
-                <span class="text-info">Subtotal: ${{ cart.get_total_price }}</span>
+                <span class="text-info">Subtotal: ₹{{ cart.get_total_price }}</span>
                 <div class="card-actions">
                   <a href="{% url 'cart_detail' %}" class="btn btn-primary btn-block">View cart</a>
                 </div>
@@ -88,7 +99,7 @@
         <svg class="swap-on fill-current w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.64,13.5A1,1,0,0,0,20.5,12,9,9,0,0,1,11.5,3a1,1,0,0,0,0-2A11,11,0,0,0,12.5,23,11,11,0,0,0,21.64,13.5Z"/></svg>
       </label>
     </div>
-  </div>
+  </nav>
 
   <main class="pt-20 flex-grow">
     {% block content %}
@@ -138,9 +149,10 @@
       
       <div>
         <span class="footer-title opacity-100 text-lg mb-4">Legal</span>
-        <a class="link link-hover block mb-2">Terms of use</a>
-        <a class="link link-hover block mb-2">Privacy policy</a>
-        <a class="link link-hover block mb-2">Cookie policy</a>
+        <a href="{% url 'terms_conditions' %}" class="link link-hover block mb-2">Terms & conditions</a>
+        <a href="{% url 'refund_policy' %}" class="link link-hover block mb-2">Refund policy</a>
+        <a href="{% url 'privacy_policy' %}" class="link link-hover block mb-2">Privacy policy</a>
+        <a href="{% url 'support_policy' %}" class="link link-hover block mb-2">Support policy</a>
       </div>
     </div>
   </footer>

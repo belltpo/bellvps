@@ -1,429 +1,54 @@
+{% extends 'serverproject/base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en" data-theme="light">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bell Server - Professional VPS Hosting</title>
-  <link href="https://cdn.jsdelivr.net/npm/daisyui@3.9.4/dist/full.css" rel="stylesheet" />
-  <link rel="icon" href="{% static 'serverproject/images/icon.png' %}" type="image/png">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            primary: {
-              50: '#f0f9ff', 100: '#e0f2fe', 200: '#bae6fd', 300: '#7dd3fc', 400: '#38bdf8',
-              500: '#0ea5e9', 600: '#0284c7', 700: '#0369a1', 800: '#075985', 900: '#0c4a6e'
-            },
-            secondary: {
-              50: '#fdf4ff', 100: '#fae8ff', 200: '#f5d0fe', 300: '#f0abfc', 400: '#e879f9',
-              500: '#d946ef', 600: '#c026d3', 700: '#a21caf', 800: '#86198f', 900: '#701a75'
-            },
-            accent: {
-              50: '#fff7ed', 100: '#ffedd5', 200: '#fed7aa', 300: '#fdba74', 400: '#fb923c',
-              500: '#f97316', 600: '#ea580c', 700: '#c2410c', 800: '#9a3412', 900: '#7c2d12'
-            }
-          },
-          boxShadow: {
-            'card': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-            'card-hover': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
-          },
-          animation: {
-            'gradient': 'gradient 8s ease infinite',
-          },
-          keyframes: {
-            gradient: {
-              '0%, 100%': { backgroundPosition: '0% 50%' },
-              '50%': { backgroundPosition: '100% 50%' },
-            }
-          }
-        }
-      },
-      daisyui: {
-        themes: [
-          {
-            light: {
-              ...require("daisyui/src/theming/themes")["light"],
-              primary: "#0ea5e9", 
-              secondary: "#d946ef", 
-              accent: "#f97316",
-              success: "#10b981",
-              neutral: "#2a323c", 
-              "base-100": "#ffffff", 
-              "base-200": "#f9fafb", 
-              "base-300": "#f3f4f6"
-            },
-            dark: {
-              ...require("daisyui/src/theming/themes")["dark"],
-              primary: "#38bdf8", 
-              secondary: "#e879f9", 
-              accent: "#fb923c",
-              success: "#34d399",
-              neutral: "#1f2937", 
-              "base-100": "#1f2937", 
-              "base-200": "#111827", 
-              "base-300": "#0f172a"
-            }
-          }
-        ]
-      }
-    }
-  </script>
-  <style>
-    /* Custom styles for better transitions and effects */
-    .text-gradient {
-      background-clip: text;
-      -webkit-background-clip: text;
-      color: transparent;
-      background-size: 200% 200%;
-      animation: gradient 8s ease infinite;
-    }
-    
-    .bg-gradient-animate {
-      background-size: 200% 200%;
-      animation: gradient 8s ease infinite;
-    }
-    
-    .card {
-      transition: all 0.3s ease;
-    }
-    
-    .card:hover {
-      transform: translateY(-5px);
-    }
-    
-    .btn {
-      transition: all 0.3s ease;
-    }
-    
-    /* Light mode specific adjustments for better visibility */
-    [data-theme="light"] .text-gray-800 {
-      color: #1f2937 !important; /* Darker gray for better contrast in light mode */
-    }
-    
-    [data-theme="light"] .text-gray-500 {
-      color: #4b5563 !important; /* Darker gray for better contrast in light mode */
-    }
-    
-    [data-theme="light"] .text-gradient {
-      background-image: linear-gradient(to right, #0369a1, #a21caf) !important; /* Darker gradient for headings */
-    }
-    
-    /* Dark mode specific adjustments */
-    [data-theme="dark"] .text-gray-800 {
-      color: #e5e7eb !important; /* Lighter color for dark mode */
-    }
-    
-    [data-theme="dark"] .text-gray-600 {
-      color: #d1d5db !important; /* Lighter color for dark mode */
-    }
-    
-    [data-theme="dark"] .text-gray-700 {
-      color: #e5e7eb !important; /* Lighter color for dark mode */
-    }
-    
-    [data-theme="dark"] .card-bordered {
-      border-color: #374151;
-    }
-    
-    /* Improved focus states for accessibility */
-    a:focus, button:focus, input:focus {
-      outline: 2px solid rgba(14, 165, 233, 0.5);
-      outline-offset: 2px;
-    }
-    
-    [data-theme="dark"] a:focus, 
-    [data-theme="dark"] button:focus, 
-    [data-theme="dark"] input:focus {
-      outline: 2px solid rgba(56, 189, 248, 0.5);
-    }
-    
-    /* Smooth page transitions */
-    body {
-      opacity: 0;
-      animation: fadeIn 0.5s ease-in-out forwards;
-    }
-    
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-    
-    /* Improved navbar and footer styling */
-    .navbar {
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-    }
-    
-    .footer a {
-      transition: color 0.2s ease;
-    }
-    
-    .footer a:hover {
-      color: theme('colors.primary.300');
-    }
-    
-    /* Fix for light mode visibility */
-    [data-theme="light"] .hero p {
-      color: #1f2937 !important; /* Much darker text for hero paragraphs */
-    }
-    
-    [data-theme="light"] .card p {
-      color: #374151 !important; /* Darker text for card content */
-    }
-    
-    /* Fix for dark mode visibility */
-    [data-theme="dark"] .hero p {
-      color: #e5e7eb !important; /* Lighter text for hero paragraphs */
-    }
-    
-    [data-theme="dark"] .card p {
-      color: #e5e7eb !important; /* Lighter text for card content */
-    }
-    
-    /* Footer visibility fixes for both modes */
-    .footer-title {
-      color: #f8fafc !important; /* Light color for footer titles in both modes */
-    }
-    
-    .text-neutral-content {
-      color: #f8fafc !important; /* Light color for footer text in both modes */
-    }
-    
-    /* Fix for gradient text in both modes */
-    [data-theme="light"] h1 .text-gradient,
-    [data-theme="light"] h2 .text-gradient {
-      background-image: linear-gradient(to right, #0c4a6e, #701a75) !important; /* Darker gradient for headings */
-    }
-    
-    [data-theme="dark"] h1 .text-gradient,
-    [data-theme="dark"] h2 .text-gradient {
-      background-image: linear-gradient(to right, #38bdf8, #e879f9) !important; /* Brighter gradient for dark mode */
-    }
-    
-    /* Theme transition effect */
-    .theme-transition {
-      transition: background-color 0.5s ease, color 0.5s ease;
-    }
-    
-    /* Animation for sections */
-    .animate-fadeIn {
-      animation: fadeInSection 0.8s ease-out forwards;
-    }
-    
-    @keyframes fadeInSection {
-      from { 
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to { 
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-    
-    /* Additional fixes for perfect visibility in both modes */
-    [data-theme="dark"] .text-gray-300 {
-      color: #d1d5db !important;
-    }
-    
-    [data-theme="dark"] .text-gray-400 {
-      color: #9ca3af !important;
-    }
-    
-    [data-theme="light"] .text-gray-300 {
-      color: #4b5563 !important;
-    }
-    
-    [data-theme="light"] .text-gray-400 {
-      color: #4b5563 !important;
-    }
-    
-    /* Ensure pricing card content is visible in both modes */
-    .card span {
-      color: #1f2937 !important;
-    }
-    
-    [data-theme="dark"] .card span {
-      color: #e5e7eb !important;
-    }
-    
-    /* Make sure gradient text is visible in both modes */
-    .dark-gradient {
-      background-image: linear-gradient(to right, #38bdf8, #e879f9);
-    }
-    
-    [data-theme="light"] .dark-gradient {
-      background-image: linear-gradient(to right, #0369a1, #a21caf);
-    }
-    
-    [data-theme="dark"] .dark-gradient {
-      background-image: linear-gradient(to right, #38bdf8, #e879f9);
-    }
-  </style>
-</head>
-<body class="bg-base-100 text-base-content">
-  <nav class="navbar bg-base-100/80 backdrop-blur-md fixed top-0 left-0 right-0 z-50 shadow-sm">
-    <div class="navbar-start">
-      <div class="dropdown">
-        <label tabindex="0" class="btn btn-ghost lg:hidden">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
-        </label>
-        <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
-          <li><a href="{% url 'index' %}" class="font-medium">Home</a></li>
-          <li><a href="{% url 'pricing' %}" class="font-medium">Pricing</a></li>
-          <li><a href="{% url 'features' %}" class="font-medium">Features</a></li>
-          <li><a href="{% url 'about' %}" class="font-medium">About</a></li>
-          <li><a href="{% url 'contact' %}" class="font-medium">Contact</a></li>
-        </ul>
-      </div>
-      <a class="btn btn-ghost normal-case text-xl font-bold flex items-center gap-2">
-        <div class="p-1 rounded dark:bg-white">
-          <img
-            src="https://www.bellglobal.in/wp-content/uploads/2021/02/New-Logo-BellGlobal.png"
-            alt="Bell Server Logo"
-            class="h-8 w-auto"
-            onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWJlbGwiPjxwYXRoIGQ9Ik0xOC4zODcgMTIuMDM2QTYuNSA2LjUgMCAxIDAgNi42MTMgMTIuMDM2TTEyIDE5LjVWMThtMC0xMy41VjNNOS41IDIxaDVNOC4yMTIgMTUuNjFBNi41IDYuNSAwIDAgMCAxNS43ODggMTUuNjEiLz48L3N2Zz4='; this.classList.add('text-primary');"
-          />
-        </div>
-      </a>
-      
-    </div>
-    <div class="navbar-center hidden lg:flex">
-      <ul class="menu menu-horizontal px-1">
-        <li><a href="{% url 'index' %}" class="font-medium">Home</a></li>
-        <li><a href="{% url 'pricing' %}" class="font-medium">Pricing</a></li>
-        <li><a href="{% url 'features' %}" class="font-medium">Features</a></li>
-        <li><a href="{% url 'about' %}" class="font-medium">About</a></li>
-        <li><a href="{% url 'contact' %}" class="font-medium">Contact</a></li>
-      </ul>
-    </div>
-    <div class="navbar-end">
-      <label class="swap swap-rotate mr-4">
-        <input type="checkbox" id="theme-toggle" />
-        <svg class="swap-on fill-current w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M5.64,17l-.71.71a1,1,0,0,0,0,1.41,1,1,0,0,0,1.41,0l.71-.71A1,1,0,0,0,5.64,17ZM5,12a1,1,0,0,0-1-1H3a1,1,0,0,0,0,2H4A1,1,0,0,0,5,12Zm7-7a1,1,0,0,0,1-1V3a1,1,0,0,0-2,0V4A1,1,0,0,0,12,5ZM5.64,7.05a1,1,0,0,0,.7.29,1,1,0,0,0,.71-.29,1,1,0,0,0,0-1.41l-.71-.71A1,1,0,0,0,4.93,6.34Zm12,.29a1,1,0,0,0,.7-.29l.71-.71a1,1,0,1,0-1.41-1.41L17,5.64a1,1,0,0,0,0,1.41A1,1,0,0,0,17.66,7.34ZM21,11H20a1,1,0,0,0,0,2h1a1,1,0,0,0,0-2Zm-9,8a1,1,0,0,0-1,1v1a1,1,0,0,0,2,0V20A1,1,0,0,0,12,19ZM18.36,17A1,1,0,0,0,17,18.36l.71.71a1,1,0,0,0,1.41,0,1,1,0,0,0,0-1.41ZM12,6.5A5.5,5.5,0,1,0,17.5,12,5.51,5.51,0,0,0,12,6.5Zm0,9A3.5,3.5,0,1,1,15.5,12,3.5,3.5,0,0,1,12,15.5Z"/></svg>
-        <svg class="swap-off fill-current w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.64,13a1,1,0,0,0-1.05-.14,8.05,8.05,0,0,1-3.37.73A8.15,8.15,0,0,1,9.08,5.49a8.59,8.59,0,0,1,.25-2A1,1,0,0,0,8,2.36,10.14,10.14,0,1,0,22,14.05,1,1,0,0,0,21.64,13Zm-9.5,6.69A8.14,8.14,0,0,1,7.08,5.22v.27A10.15,10.15,0,0,0,17.22,15.63a9.79,9.79,0,0,0,2.1-.22A8.11,8.11,0,0,1,12.14,19.73Z"/></svg>
-      </label>
-      
-      <!-- Cart Button -->
-      <div class="dropdown dropdown-end">
-        <label tabindex="0" class="btn btn-ghost btn-circle">
-          <div class="indicator">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
-            <span class="badge badge-sm indicator-item">0</span>
-          </div>
-        </label>
-        <div tabindex="0" class="mt-3 z-[1] card card-compact dropdown-content w-52 bg-base-100 shadow">
-          <div class="card-body">
-            <span class="font-bold text-lg">0 Items</span>
-            <span class="text-info">Subtotal: $0.00</span>
-            <div class="card-actions">
-              <a href="#" class="btn btn-primary btn-block">View cart</a>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <a href="{% url 'contact' %}" class="btn btn-primary btn-sm lg:btn-md ml-2">Get Started</a>
-    </div>
-  </nav>
+{% block title %}Bell Server - Professional VPS Hosting{% endblock %}
 
-  <header class="hero min-h-[80vh] bg-base-200 relative overflow-hidden">
-    <div class="absolute inset-0 bg-gradient-to-br from-primary-500/10 to-secondary-500/10 dark:from-primary-900/20 dark:to-secondary-900/20"></div>
-    <div class="hero-content text-center z-10 max-w-5xl mx-auto px-4">
-      <div class="max-w-3xl">
-        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-          <span class="text-gradient bg-gradient-to-r from-primary-600 to-secondary-600 bg-gradient-animate">
-            Fast, Reliable VPS Hosting
-          </span>
+{% block content %}
+  <header class="hero min-h-screen bg-base-200 theme-transition">
+    <div class="hero-content text-center">
+      <div class="max-w-2xl mx-auto">
+        <h1 class="text-5xl md:text-7xl font-extrabold text-gradient bg-gradient-to-r from-primary-500 to-secondary-500 animate-gradient">
+          Powerful VPS Hosting
         </h1>
-        <p class="py-6 text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-          Power your projects with high-speed virtual private servers tailored for traders and developers. Experience unmatched performance and reliability.
+        <p class="py-6 text-lg md:text-xl text-gray-800">
+          Experience unparalleled performance, reliability, and scalability with our premium VPS solutions. Built for developers, by developers.
         </p>
-        <div class="flex flex-col sm:flex-row gap-4 justify-center mt-6">
-          <a href="{% url 'pricing' %}" class="btn btn-primary btn-lg">Explore Plans</a>
-          <a href="{% url 'features' %}" class="btn btn-outline btn-lg">Learn More</a>
-        </div>
+        <a href="{% url 'pricing' %}" class="btn btn-primary btn-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
+          Get Started
+        </a>
       </div>
     </div>
-    <!-- Abstract shapes for visual interest -->
-    <div class="absolute bottom-0 left-0 w-64 h-64 bg-primary-500/10 rounded-full filter blur-3xl"></div>
-    <div class="absolute top-20 right-10 w-72 h-72 bg-secondary-500/10 rounded-full filter blur-3xl"></div>
   </header>
 
-
-
-  <footer class="footer p-10 bg-neutral text-neutral-content">
-    <div class="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-      <div>
-        <span class="footer-title opacity-100 text-lg mb-4">Bell Server</span>
-        <p class="max-w-xs">Providing reliable VPS hosting solutions for businesses and individuals since 2020.</p>
-        <div class="flex mt-4 space-x-4">
-          <a class="hover:text-primary transition-colors">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="fill-current">
-              <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"></path>
-            </svg>
-          </a>
-          <a class="hover:text-primary transition-colors">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="fill-current">
-              <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"></path>
-            </svg>
-          </a>
-          <a class="hover:text-primary transition-colors">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="fill-current">
-              <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"></path>
-            </svg>
-          </a>
+  <main class="py-16 md:py-24 bg-base-100 theme-transition">
+    <section id="features" class="container mx-auto px-6 text-center animate-fadeIn">
+      <h2 class="text-4xl font-bold mb-4 text-gray-800">Why Choose Bell Server?</h2>
+      <p class="max-w-3xl mx-auto text-lg text-gray-600 mb-12">
+        We provide top-tier infrastructure and features to ensure your projects run smoothly and efficiently.
+      </p>
+      <div class="grid md:grid-cols-3 gap-8">
+        <!-- Feature 1 -->
+        <div class="card bg-base-200 shadow-card hover:shadow-card-hover card-bordered">
+          <div class="card-body items-center text-center">
+            <h3 class="card-title text-2xl font-bold text-gray-800">Blazing Fast SSDs</h3>
+            <p class="text-gray-600">Our servers use NVMe SSDs for lightning-fast read/write speeds, ensuring your applications are always responsive.</p>
+          </div>
+        </div>
+        <!-- Feature 2 -->
+        <div class="card bg-base-200 shadow-card hover:shadow-card-hover card-bordered">
+          <div class="card-body items-center text-center">
+            <h3 class="card-title text-2xl font-bold text-gray-800">99.9% Uptime</h3>
+            <p class="text-gray-600">We guarantee a 99.9% uptime, so you can be confident that your services will always be available.</p>
+          </div>
+        </div>
+        <!-- Feature 3 -->
+        <div class="card bg-base-200 shadow-card hover:shadow-card-hover card-bordered">
+          <div class="card-body items-center text-center">
+            <h3 class="card-title text-2xl font-bold text-gray-800">24/7 Expert Support</h3>
+            <p class="text-gray-600">Our team of experts is available around the clock to help you with any issues or questions you may have.</p>
+          </div>
         </div>
       </div>
-      
-      <div>
-        <span class="footer-title opacity-100 text-lg mb-4">Services</span>
-        <a class="link link-hover block mb-2">VPS Hosting</a>
-        <a class="link link-hover block mb-2">Dedicated Servers</a>
-        <a class="link link-hover block mb-2">Cloud Solutions</a>
-        <a class="link link-hover block mb-2">Managed Services</a>
-      </div>
-      
-      <div>
-        <span class="footer-title opacity-100 text-lg mb-4">Company</span>
-        <a class="link link-hover block mb-2">About us</a>
-        <a class="link link-hover block mb-2">Contact</a>
-        <a class="link link-hover block mb-2">Careers</a>
-        <a class="link link-hover block mb-2">Blog</a>
-      </div>
-      
-      <div>
-        <span class="footer-title opacity-100 text-lg mb-4">Legal</span>
-        <a class="link link-hover block mb-2">Terms of use</a>
-        <a class="link link-hover block mb-2">Privacy policy</a>
-        <a class="link link-hover block mb-2">Cookie policy</a>
-      </div>
-    </div>
-  </footer>
-  
-  <div class="bg-neutral-focus text-neutral-content py-4">
-    <div class="container mx-auto px-6 text-center">
-      <p> 2025 Bell Server. All rights reserved.</p>
-    </div>
-  </div>
-  
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const themeToggle = document.getElementById('theme-toggle');
-      const html = document.documentElement;
-      const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-      html.setAttribute('data-theme', savedTheme);
-      themeToggle.checked = savedTheme === 'dark';
-
-      themeToggle.addEventListener('change', () => {
-        const newTheme = themeToggle.checked ? 'dark' : 'light';
-        html.setAttribute('data-theme', newTheme);
-        localStorage.setItem('theme', newTheme);
-      });
-    });
-  </script>
-</body>
-</html>
+    </section>
+  </main>
+{% endblock %}

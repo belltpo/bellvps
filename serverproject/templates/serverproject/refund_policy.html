@@ -1,0 +1,21 @@
+{% extends 'serverproject/base.html' %}
+
+{% block title %}Refund Policy - Bell Server{% endblock %}
+
+{% block content %}
+<div class="bg-base-200 py-12">
+    <div class="container mx-auto px-4">
+        <div class="max-w-4xl mx-auto bg-base-100 rounded-lg shadow-lg p-8">
+            <h1 class="text-4xl font-bold text-center mb-8">Cancellation & Refund Policy</h1>
+            <div class="prose max-w-none text-base-content">
+                <p class="text-justify">Please note that most of our products are Trialware. It means that you SHOULD evaluate the trial version of the program(s) you are interested in before buying. Please note that all sales are final and we do not offer refunds. If you like the products during trial and want to use it further:</p>
+                <ul class="list-disc list-inside">
+                    <li>You have to buy the license to use it. Please read our <a href="{% url 'terms_conditions' %}" class="link link-primary">Terms & Conditions</a> before placing the order.</li>
+                    <li>Products are offered ‘as is’ without any expressed claims of satisfactory working under all conditions. You should check working from all angles before subscription. Late discovery about any working will not be accepted as a reason for refund.</li>
+                    <li>If you are in doubt about working of any feature, please ask before making a subscription. Please do not assume working in a particular manner.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

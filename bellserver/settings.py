@@ -37,17 +37,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'serverproject'
+    'serverproject',
+    'import_export',
 ]
 
 CART_SESSION_ID = 'cart'
 
-# CCAvenue
-CCAVENUE_MERCHANT_ID = '1052351'
-CCAVENUE_WORKING_KEY = '977B4130F6F6B69B8A5D0E2698217973'
-CCAVENUE_ACCESS_CODE = 'AVSX95JG21AP78XSPA'
-CCAVENUE_REDIRECT_URL = 'http://127.0.0.1:8000/ccavenue/success/'
-CCAVENUE_CANCEL_URL = 'http://127.0.0.1:8000/ccavenue/cancel/'
+# Razorpay Configuration
+# IMPORTANT: Use environment variables in production for security.
+RAZORPAY_KEY_ID = 'rzp_test_vG1Y4m7XrwgQot'  # Replace with your Key ID
+RAZORPAY_KEY_SECRET = 'C1mnEUDHuyw3ueeE8wW9p5kO'  # Replace with your Key Secret
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

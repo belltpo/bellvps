@@ -1,9 +1,20 @@
 <html>
 <head>
-<title>Submitting to CCAvenue</title>
+<title>Redirecting to CCAvenue...</title>
+<style>
+  body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background-color: #f9f9f9; }
+  .container { text-align: center; }
+  .loader { border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 40px; height: 40px; animation: spin 2s linear infinite; margin: 20px auto; }
+  @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+</style>
 </head>
 <body onload="document.redirect.submit()">
-    <form name="redirect" action="https://secure.ccavenue.com/transaction/transaction.do?command=initiateTransaction" method="post">
+    <div class="container">
+        <h1>Redirecting to CCAvenue...</h1>
+        <p>Please do not refresh or close this window.</p>
+        <div class="loader"></div>
+    </div>
+    <form name="redirect" action="{{ ccavenue_url }}" method="post" style="display: none;">
         <input type=hidden name=encRequest value="{{ enc_request }}">
         <input type=hidden name=access_code value="{{ access_code }}">
     </form>

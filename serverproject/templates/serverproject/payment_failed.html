@@ -3,15 +3,17 @@
 {% block title %}Payment Failed{% endblock %}
 
 {% block content %}
-<div class="container mx-auto mt-24 px-4 text-center py-10">
-    <h1 class="text-3xl font-bold text-red-500 mb-4">Payment Failed</h1>
-    <p class="text-lg">Unfortunately, we were unable to process your payment.</p>
-    {% if status %}
-    <p class="text-md mt-2">Reason: <strong>{{ status }}</strong></p>
-    {% endif %}
-    <div class="mt-6">
-        <a href="{% url 'pricing' %}" class="btn btn-primary">Try Again</a>
-        <a href="{% url 'index' %}" class="btn btn-outline">Go to Homepage</a>
+<div class="hero min-h-[calc(100vh-4rem)] bg-base-200">
+    <div class="hero-content text-center">
+        <div class="max-w-md p-8 bg-base-100 rounded-lg shadow-xl">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-red-500 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <h1 class="text-4xl font-bold text-red-500 mt-4">Payment Failed</h1>
+            <p class="mt-4 text-lg">Unfortunately, your payment could not be processed at this time.</p>
+            <p class="mt-2">Please try again or contact support if the problem persists.</p>
+            <a href="{% url 'order_create' %}" class="btn btn-primary mt-6">Try Again</a>
+        </div>
     </div>
 </div>
 {% endblock %}

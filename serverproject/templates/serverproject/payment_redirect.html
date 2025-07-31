@@ -1,0 +1,15 @@
+{% extends 'serverproject/base.html' %}
+
+{% block title %}Redirecting...{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-16 text-center">
+    <h1 class="text-2xl font-bold">Processing your payment...</h1>
+    <p class="mt-4">Please wait while we redirect you.</p>
+</div>
+
+<script>
+    // Perform the redirect on the client side
+    window.location.href = "{{ payment_data.payment_url }}";
+</script>
+{% endblock %}

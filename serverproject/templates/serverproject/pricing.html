@@ -14,37 +14,40 @@
       </p>
       
       <div class="grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
-        {% for product in products %}
+        {% for plan in plans %}
         <div class="card bg-base-100 shadow-xl hover:shadow-2xl transition border-t-4 border-primary">
-          <div class="card-body p-6">
-            <h3 class="text-2xl font-bold text-primary mb-1">{{ product.name }}</h3>
-            <p class="text-sm text-gray-700 dark:text-gray-400 mb-4">{{ product.description }}</p>
-            <div class="text-3xl font-bold mb-1">₹{{ product.price }}</div>
+          <div class="card-body p-6 flex flex-col">
+            <h3 class="text-2xl font-bold text-primary mb-1">{{ plan.name }}</h3>
+            <p class="text-sm text-gray-700 dark:text-gray-400 mb-4">{{ plan.description }}</p>
+            <div class="text-3xl font-bold mb-1">₹{{ plan.price }}</div>
             <p class="text-sm text-gray-700 dark:text-gray-400 mb-6">per year</p>
             
-            <ul class="space-y-3 mb-6">
-              <li class="flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                </svg>
-                <span class="text-gray-800 dark:text-gray-300">2 Core CPU @3.5GHz</span>
-              </li>
-              <li class="flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                </svg>
-                <span class="text-gray-800 dark:text-gray-300">3 GB DDR4 RAM</span>
-              </li>
-              <li class="flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                </svg>
-                <span class="text-gray-800 dark:text-gray-300">60 GB SSD</span>
-              </li>
-            </ul>
+            <div class="mb-6">
+                <h4 class="font-bold mb-2">Specifications:</h4>
+                <ul class="space-y-3">
+                    {% for spec in plan.specifications.all %}
+                    <li class="flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                        <span class="text-gray-800 dark:text-gray-300">{{ spec.name }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="mb-6">
+                <h4 class="font-bold mb-2">Features:</h4>
+                <ul class="space-y-3">
+                    {% for feature in plan.features.all %}
+                    <li class="flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                        <span class="text-gray-800 dark:text-gray-300">{{ feature.name }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
             
             <div class="mt-auto">
-              <a href="{% url 'cart_add' product.id %}" class="btn btn-primary w-full">Buy Now</a>
+              <a href="{% url 'cart_add' plan.id %}" class="btn btn-primary w-full">Buy Now</a>
             </div>
           </div>
         </div>
