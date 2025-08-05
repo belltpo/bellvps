@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Plan, Order, OrderItem
-from .forms import OrderCreateForm
+from .models import Plan, Order, OrderItem, ContactMessage
+from .forms import OrderCreateForm, ContactForm
 from .cart import Cart
 from django.conf import settings
 import razorpay
@@ -8,6 +8,13 @@ from django.views.decorators.csrf import csrf_exempt
 from django.urls import reverse
 from django.http import JsonResponse
 import json
+from razorpay.errors import SignatureVerificationError
+import logging
+from django.contrib import messages
+from .utils import send_invoice_email
+
+# Get an instance of a logger
+logger = logging.getLogger(__name__)
 
 def index(request):
     return render(request, 'serverproject/index.html')
@@ -23,7 +30,15 @@ def about(request):
     return render(request, 'serverproject/about.html')
 
 def contact(request):
-    return render(request, 'serverproject/contact.html')
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Your message has been sent successfully! We will get back to you soon.')
+            return redirect('contact')
+    else:
+        form = ContactForm()
+    return render(request, 'serverproject/contact.html', {'form': form})
 
 def cart_add(request, plan_id):
     cart = Cart(request)
@@ -37,9 +52,15 @@ def cart_add(request, plan_id):
         else:
             cart.remove(plan)
     else:
-        cart.add(plan=plan, quantity=quantity)
+        # For server plans, always set quantity to 1
+        cart.add(plan=plan, quantity=1)
 
-    return redirect('cart_detail')
+    # Redirect back to the referring page or cart_detail if no referrer
+    next_url = request.POST.get('next', request.META.get('HTTP_REFERER', 'cart_detail'))
+    if 'cart' not in next_url:  # If coming from pricing page, stay there
+        return redirect(next_url)
+    else:
+        return redirect('cart_detail')
 
 def cart_remove(request, plan_id):
     cart = Cart(request)
@@ -102,50 +123,99 @@ def order_create(request):
         form = OrderCreateForm()
     return render(request, 'serverproject/order_create.html', {'cart': cart, 'form': form})
 
+@csrf_exempt
 def payment_verification(request):
-    if request.method == 'POST':
+    if request.method == "POST":
+        logger.info(f"Received payment verification data: {request.body.decode()}")
+        
         try:
             data = json.loads(request.body)
-            client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+            razorpay_payment_id = data['razorpay_payment_id']
+            razorpay_order_id = data['razorpay_order_id']
+            razorpay_signature = data['razorpay_signature']
             
-            razorpay_payment_id = data.get('razorpay_payment_id', '')
-            razorpay_order_id = data.get('razorpay_order_id', '')
-            razorpay_signature = data.get('razorpay_signature', '')
-
             params_dict = {
                 'razorpay_order_id': razorpay_order_id,
                 'razorpay_payment_id': razorpay_payment_id,
                 'razorpay_signature': razorpay_signature
             }
 
-            client.utility.verify_payment_signature(params_dict)
+            logger.info(f"Order ID: {razorpay_order_id}")
+            logger.info(f"Payment ID: {razorpay_payment_id}")
+            logger.info(f"Signature: {razorpay_signature}")
 
+        except (KeyError, json.JSONDecodeError) as e:
+            logger.error(f"Invalid payload received: {e}")
+            return JsonResponse({'success': False, 'redirect_url': reverse('payment_failed')})
+
+        # Initialize Razorpay client
+        try:
+            client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+            logger.info("Razorpay client initialized successfully")
+        except Exception as e:
+            logger.error(f"Failed to initialize Razorpay client: {e}")
+            return JsonResponse({'success': False, 'redirect_url': reverse('payment_failed')})
+
+        try:
+            # Verify payment signature
+            client.utility.verify_payment_signature(params_dict)
+            logger.info("Payment signature verified successfully")
+            
             try:
                 order = Order.objects.get(razorpay_order_id=razorpay_order_id)
+                logger.info(f"Found order: {order.id}")
+                
                 order.razorpay_payment_id = razorpay_payment_id
                 order.razorpay_signature = razorpay_signature
                 order.status = 'paid'
                 order.save()
+                logger.info(f"Order {order.id} updated successfully")
+                
+                # Clear the cart
+                cart = Cart(request)
+                cart.clear()
+                
+                # Send invoice email
+                try:
+                    send_invoice_email(order)
+                    logger.info(f"Invoice email sent successfully for order {order.id}")
+                except Exception as email_error:
+                    logger.error(f"Failed to send invoice email for order {order.id}: {email_error}")
+                    # Don't fail the payment if email fails
                 
                 request.session['order_id'] = order.id
+                logger.info(f"Payment verification successful for order {order.id}")
                 return JsonResponse({'success': True, 'redirect_url': reverse('payment_success')})
+                
             except Order.DoesNotExist:
+                logger.error(f"Order not found for razorpay_order_id: {razorpay_order_id}")
                 return JsonResponse({'success': False, 'redirect_url': reverse('payment_failed')})
 
-        except Exception as e:
+        except SignatureVerificationError as e:
+            logger.error(f"Signature Verification Failed: {e}")
             try:
                 order = Order.objects.get(razorpay_order_id=razorpay_order_id)
                 order.status = 'failed'
                 order.save()
+                logger.info(f"Order {order.id} marked as failed")
             except Order.DoesNotExist:
-                pass
+                logger.error(f"Order not found when marking as failed: {razorpay_order_id}")
+            return JsonResponse({'success': False, 'redirect_url': reverse('payment_failed')})
+        except Exception as e:
+            logger.error(f"An unexpected error occurred in payment verification: {e}")
             return JsonResponse({'success': False, 'redirect_url': reverse('payment_failed')})
             
+    logger.error("Payment verification called with non-POST method")
     return JsonResponse({'success': False, 'redirect_url': reverse('payment_failed')})
 
 def payment_success(request):
     order_id = request.session.get('order_id')
     order = get_object_or_404(Order, id=order_id) if order_id else None
+    
+    if order and order.status == 'paid':
+        # Email is already sent in payment_verification, just show success message
+        messages.success(request, 'Payment successful! Invoice has been sent to your email address.')
+    
     return render(request, 'serverproject/payment_success.html', {'order': order})
 
 def payment_failed(request):
@@ -160,6 +230,32 @@ def payment_cancelled(request, order_id):
     except Order.DoesNotExist:
         pass
     return render(request, 'serverproject/payment_cancelled.html')
+
+def debug_razorpay(request):
+    """Debug view to test Razorpay configuration"""
+    try:
+        client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+        
+        # Test creating a simple order
+        test_order = client.order.create({
+            'amount': 100,  # ₹1.00 in paise
+            'currency': 'INR',
+            'receipt': 'test_receipt_123',
+            'payment_capture': 1
+        })
+        
+        return JsonResponse({
+            'success': True,
+            'message': 'Razorpay configuration is working',
+            'test_order_id': test_order['id'],
+            'key_id': settings.RAZORPAY_KEY_ID[:8] + '...'  # Show only first 8 chars for security
+        })
+    except Exception as e:
+        return JsonResponse({
+            'success': False,
+            'error': str(e),
+            'message': 'Razorpay configuration failed'
+        })
 
 # Policy Pages
 def terms_conditions(request):

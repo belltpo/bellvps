@@ -1,58 +1,194 @@
 {% extends 'serverproject/base.html' %}
-{% load static %}
+{% load static humanize %}
 
-{% block title %}Pricing{% endblock %}
+{% block title %}Pricing - Bell Server{% endblock %}
 
 {% block content %}
+<style>
+  /* Custom VPS Color Scheme */
+  .vps-card-1 {
+    --card-color: #00BFFF; /* Sky Blue - Budget/Entry-level */
+    --card-border: #00BFFF;
+  }
+  .vps-card-2 {
+    --card-color: #00C851; /* Green - Value/Trust */
+    --card-border: #00C851;
+  }
+  .vps-card-3 {
+    --card-color: #FFA500; /* Orange - Mid-Tier */
+    --card-border: #FFA500;
+  }
+  .vps-card-4 {
+    --card-color: #FFD700; /* Gold - Premium */
+    --card-border: #FFD700;
+  }
+  .vps-card-5 {
+    --card-color: #1DE9B6; /* Teal - Modern/Stable */
+    --card-border: #1DE9B6;
+  }
+  
+  /* Apply colors to card elements */
+  .vps-card .card-title {
+    color: var(--card-color) !important;
+  }
+  .vps-card .card-price {
+    color: var(--card-color) !important;
+  }
+  .vps-card.card-border {
+    border-top: 4px solid var(--card-border) !important;
+  }
+  .vps-card .card-icon {
+    color: var(--card-color) !important;
+  }
+  .vps-card .card-btn {
+    border-color: var(--card-color) !important;
+    color: var(--card-color) !important;
+  }
+  .vps-card .card-btn:hover {
+    background-color: var(--card-color) !important;
+    color: white !important;
+  }
+  
+  /* Featured plan special styling */
+  .vps-card.featured {
+    border-top: 4px solid hsl(var(--a)) !important;
+  }
+  
+  /* Professional Left Corner Ribbon */
+  .popular-ribbon {
+    position: absolute;
+    top: 8px;
+    left: -8px;
+    background: linear-gradient(135deg, #FF4757, #E84118);
+    color: white;
+    padding: 6px 20px 6px 12px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 3px 10px rgba(255, 71, 87, 0.3);
+    z-index: 10;
+    border-radius: 0 4px 4px 0;
+  }
+  
+  .popular-ribbon::before {
+    content: '';
+    position: absolute;
+    left: -8px;
+    top: 0;
+    width: 0;
+    height: 0;
+    border-right: 8px solid #E84118;
+    border-top: 14px solid transparent;
+    border-bottom: 14px solid transparent;
+  }
+  
+  .popular-ribbon::after {
+    content: '';
+    position: absolute;
+    left: -4px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+  }
+  
+  /* Standard Plus specific styling */
+  .standard-plus-card {
+    transform: scale(1.02);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+    border: 2px solid #00C851 !important;
+    position: relative;
+    z-index: 2;
+  }
+  
+  .standard-plus-card .card-body {
+    padding-top: 40px !important;
+    padding-left: 30px !important;
+  }
+  
+  .standard-plus-card:hover {
+    transform: scale(1.05) !important;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2) !important;
+  }
+</style>
+
 <section id="pricing" class="py-20 px-6 lg:px-20 bg-base-200">
     <div class="max-w-7xl mx-auto">
-      <h2 class="text-3xl md:text-4xl font-bold text-center mb-4">
-        <span class="text-gradient bg-gradient-to-r from-primary-600 to-secondary-600">VPS Plans</span>
-      </h2>
-      <p class="text-center text-gray-800 dark:text-gray-300 mb-12 max-w-3xl mx-auto">
-        Choose the perfect plan for your needs with our flexible and powerful VPS options.
-      </p>
-      
-      <div class="grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
-        {% for plan in plans %}
-        <div class="card bg-base-100 shadow-xl hover:shadow-2xl transition border-t-4 border-primary">
-          <div class="card-body p-6 flex flex-col">
-            <h3 class="text-2xl font-bold text-primary mb-1">{{ plan.name }}</h3>
-            <p class="text-sm text-gray-700 dark:text-gray-400 mb-4">{{ plan.description }}</p>
-            <div class="text-3xl font-bold mb-1">₹{{ plan.price }}</div>
-            <p class="text-sm text-gray-700 dark:text-gray-400 mb-6">per year</p>
-            
-            <div class="mb-6">
-                <h4 class="font-bold mb-2">Specifications:</h4>
-                <ul class="space-y-3">
-                    {% for spec in plan.specifications.all %}
-                    <li class="flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
-                        <span class="text-gray-800 dark:text-gray-300">{{ spec.name }}</span>
-                    </li>
-                    {% endfor %}
-                </ul>
-            </div>
+        <h1 class="text-4xl md:text-5xl font-bold text-center mb-4">
+            Choose Your <span class="text-primary">VPS Plan</span>
+        </h1>
+        <p class="text-center text-base-content/80 mb-12 max-w-3xl mx-auto">
+            Choose the perfect plan for your needs with our flexible and powerful VPS options.
+        </p>
 
-            <div class="mb-6">
-                <h4 class="font-bold mb-2">Features:</h4>
-                <ul class="space-y-3">
-                    {% for feature in plan.features.all %}
-                    <li class="flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
-                        <span class="text-gray-800 dark:text-gray-300">{{ feature.name }}</span>
-                    </li>
-                    {% endfor %}
-                </ul>
+        <div class="grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
+            {% for plan in plans %}
+            {% cycle 1 2 3 4 5 as card_number silent %}
+            <div class="card bg-base-100 shadow-lg rounded-lg overflow-hidden transition-all duration-300 ease-in-out vps-card vps-card-{{ card_number }} card-border {% if plan.is_featured %}featured transform hover:scale-105{% else %}hover:shadow-xl{% endif %} {% if 'Standard Plus' in plan.name or 'standard plus' in plan.name|lower %}standard-plus-card{% endif %}">
+
+                <!-- Professional Left Corner Ribbon for Standard Plus -->
+                {% if 'Standard Plus' in plan.name or 'standard plus' in plan.name|lower %}
+                <div class="popular-ribbon">
+                    <span>Most Popular</span>
+                </div>
+                {% endif %}
+
+                {% if plan.is_featured %}
+                <div class="absolute top-0 right-0 bg-accent text-accent-content text-xs font-bold px-3 py-1 rounded-bl-lg">Popular</div>
+                {% endif %}
+
+                <div class="card-body p-6 flex flex-col">
+                    <h3 class="text-2xl font-bold mb-1 card-title {% if plan.is_featured %}text-accent{% endif %}">{{ plan.name }}</h3>
+                    {% if plan.description %}
+                    <p class="text-sm text-base-content/70 mb-3">{{ plan.description }}</p>
+                    {% endif %}
+
+                    <div class="mb-6">
+                        <span class="text-4xl font-extrabold card-price {% if plan.is_featured %}text-accent{% endif %}">₹{{ plan.price|intcomma }}</span>
+                        <span class="text-base-content/60">{{ plan.get_duration_display }}</span>
+                    </div>
+
+                    <div class="mb-6 flex-grow">
+                        <h4 class="font-semibold mb-3 text-base-content/90">Specifications:</h4>
+                        <ul class="space-y-3">
+                            {% for spec in plan.specifications.all %}
+                            <li class="flex items-center">
+                                <svg class="h-5 w-5 mr-3 flex-shrink-0 card-icon {% if plan.is_featured %}text-accent{% endif %}" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                </svg>
+                                <span class="text-base-content/80">{{ spec.name }}</span>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                    <div class="mb-6 flex-grow">
+                        <h4 class="font-semibold mb-3 text-base-content/90">Features:</h4>
+                        <ul class="space-y-3">
+                            {% for feature in plan.features.all %}
+                            <li class="flex items-center">
+                                <svg class="h-5 w-5 mr-3 flex-shrink-0 card-icon {% if plan.is_featured %}text-accent{% endif %}" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                </svg>
+                                <span class="text-base-content/80">{{ feature.name }}</span>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                    <div class="mt-auto">
+                        <form action="{% url 'cart_add' plan.id %}" method="post" class="w-full">
+                            {% csrf_token %}
+                            <button type="submit" class="btn w-full card-btn {% if plan.is_featured %}btn-accent{% else %}btn-outline{% endif %}">Buy Now</button>
+                        </form>
+                    </div>
+                </div>
             </div>
-            
-            <div class="mt-auto">
-              <a href="{% url 'cart_add' plan.id %}" class="btn btn-primary w-full">Buy Now</a>
-            </div>
-          </div>
+            {% endfor %}
         </div>
-        {% endfor %}
-      </div>
     </div>
-  </section>
+</section>
 {% endblock %}

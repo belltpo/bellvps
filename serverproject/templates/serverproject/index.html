@@ -1,54 +1,72 @@
 {% extends 'serverproject/base.html' %}
 {% load static %}
 
-{% block title %}Bell Server - Professional VPS Hosting{% endblock %}
+{% block title %}Bell Server - High Performance VPS Hosting{% endblock %}
 
 {% block content %}
-  <header class="hero min-h-screen bg-base-200 theme-transition">
-    <div class="hero-content text-center">
-      <div class="max-w-2xl mx-auto">
-        <h1 class="text-5xl md:text-7xl font-extrabold text-gradient bg-gradient-to-r from-primary-500 to-secondary-500 animate-gradient">
-          Powerful VPS Hosting
-        </h1>
-        <p class="py-6 text-lg md:text-xl text-gray-800">
-          Experience unparalleled performance, reliability, and scalability with our premium VPS solutions. Built for developers, by developers.
-        </p>
-        <a href="{% url 'pricing' %}" class="btn btn-primary btn-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
-          Get Started
-        </a>
-      </div>
+<!-- Hero Section -->
+<section class="bg-base-200">
+    <div class="max-w-7xl mx-auto px-6 lg:px-20 py-20 md:py-32">
+        <div class="grid md:grid-cols-2 gap-12 items-center">
+            <div class="text-center md:text-left">
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 leading-tight">
+                    Powerful & Reliable <span class="text-primary">VPS Hosting</span>
+                </h1>
+                <p class="text-lg md:text-xl text-base-content/80 mb-8">
+                    Experience blazing-fast performance, 99.9% uptime, and 24/7 expert support. Get your server online in minutes.
+                </p>
+                <a href="{% url 'pricing' %}" class="btn btn-accent btn-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">Get Started</a>
+            </div>
+            <div>
+                <img src="https://images.pexels.com/photos/1148820/pexels-photo-1148820.jpeg" alt="VPS Hosting Illustration" class="w-full h-auto max-w-lg mx-auto rounded-lg shadow-lg">
+            </div>
+        </div>
     </div>
-  </header>
+</section>
 
-  <main class="py-16 md:py-24 bg-base-100 theme-transition">
-    <section id="features" class="container mx-auto px-6 text-center animate-fadeIn">
-      <h2 class="text-4xl font-bold mb-4 text-gray-800">Why Choose Bell Server?</h2>
-      <p class="max-w-3xl mx-auto text-lg text-gray-600 mb-12">
-        We provide top-tier infrastructure and features to ensure your projects run smoothly and efficiently.
-      </p>
-      <div class="grid md:grid-cols-3 gap-8">
-        <!-- Feature 1 -->
-        <div class="card bg-base-200 shadow-card hover:shadow-card-hover card-bordered">
-          <div class="card-body items-center text-center">
-            <h3 class="card-title text-2xl font-bold text-gray-800">Blazing Fast SSDs</h3>
-            <p class="text-gray-600">Our servers use NVMe SSDs for lightning-fast read/write speeds, ensuring your applications are always responsive.</p>
-          </div>
+
+<!-- Features Section -->
+<section id="features" class="py-20 px-6 lg:px-20">
+    <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl md:text-5xl font-extrabold mb-4">Why Choose Bell Server?</h2>
+            <p class="text-lg text-base-content/70 max-w-3xl mx-auto">We provide top-tier infrastructure and features to ensure your projects run smoothly and securely.</p>
         </div>
-        <!-- Feature 2 -->
-        <div class="card bg-base-200 shadow-card hover:shadow-card-hover card-bordered">
-          <div class="card-body items-center text-center">
-            <h3 class="card-title text-2xl font-bold text-gray-800">99.9% Uptime</h3>
-            <p class="text-gray-600">We guarantee a 99.9% uptime, so you can be confident that your services will always be available.</p>
-          </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Feature 1: 99.9% Uptime -->
+            <div class="card bg-base-100 shadow-lg transition-all duration-300 hover:shadow-xl hover:transform hover:-translate-y-1">
+                <div class="card-body items-center text-center">
+                    <div class="bg-primary/10 text-primary rounded-full p-4 inline-flex mb-4">
+                        <svg class="h-8 w-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.286zm0 13.036h.008v.008h-.008v-.008z" /></svg>
+                    </div>
+                    <h2 class="card-title text-xl font-bold">99.9% Uptime</h2>
+                    <p class="text-base-content/80">Reliable service you can count on, day and night.</p>
+                </div>
+            </div>
+
+            <!-- Feature 2: 24/7 Support -->
+            <div class="card bg-base-100 shadow-lg transition-all duration-300 hover:shadow-xl hover:transform hover:-translate-y-1">
+                <div class="card-body items-center text-center">
+                    <div class="bg-primary/10 text-primary rounded-full p-4 inline-flex mb-4">
+                        <svg class="h-8 w-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18.375a6.375 6.375 0 006.375-6.375V9.75A6.375 6.375 0 0012 3.375zM12 18.375v-2.625A3.375 3.375 0 0115.375 12H18.75a6.375 6.375 0 01-6.375 6.375zM12 3.375A6.375 6.375 0 005.625 9.75v2.25c0 .98.213 1.906.601 2.744l.399.84c.42.883.984 1.693 1.67 2.413M12 3.375c2.146 0 4.12.823 5.601 2.175m-5.601-2.175c-2.146 0-4.12.823-5.601 2.175m11.202 8.45a6.373 6.373 0 01-3.375 3.375m-7.826-3.375a6.373 6.373 0 013.375 3.375" /></svg>
+                    </div>
+                    <h2 class="card-title text-xl font-bold">24/7 Support</h2>
+                    <p class="text-base-content/80">Our expert team is here to help you around the clock.</p>
+                </div>
+            </div>
+
+            <!-- Feature 3: Fast SSD -->
+            <div class="card bg-base-100 shadow-lg transition-all duration-300 hover:shadow-xl hover:transform hover:-translate-y-1">
+                <div class="card-body items-center text-center">
+                    <div class="bg-primary/10 text-primary rounded-full p-4 inline-flex mb-4">
+                        <svg class="h-8 w-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M4.5 12H3m18 0h-1.5m-15 3.75H3m18 0h-1.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 00-7.5 0v2.25h7.5V6zM15.75 12a3.75 3.75 0 00-7.5 0v2.25h7.5V12zM15.75 18a3.75 3.75 0 00-7.5 0v2.25h7.5V18z" /></svg>
+                    </div>
+                    <h2 class="card-title text-xl font-bold">Fast SSD Storage</h2>
+                    <p class="text-base-content/80">Blazing-fast SSDs for superior performance and speed.</p>
+                </div>
+            </div>
         </div>
-        <!-- Feature 3 -->
-        <div class="card bg-base-200 shadow-card hover:shadow-card-hover card-bordered">
-          <div class="card-body items-center text-center">
-            <h3 class="card-title text-2xl font-bold text-gray-800">24/7 Expert Support</h3>
-            <p class="text-gray-600">Our team of experts is available around the clock to help you with any issues or questions you may have.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
+    </div>
+</section>
 {% endblock %}

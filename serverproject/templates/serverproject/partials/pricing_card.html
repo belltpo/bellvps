@@ -1,0 +1,52 @@
+{% load humanize %}
+<div class="card bg-base-100 shadow-lg rounded-lg overflow-hidden transition-all duration-300 ease-in-out {% if plan.is_featured %}border-t-4 border-accent transform hover:scale-105{% else %}border-t-4 border-{{ color }} hover:shadow-xl{% endif %}">
+
+    {% if plan.is_featured %}
+    <div class="absolute top-0 right-0 bg-accent text-accent-content text-xs font-bold px-3 py-1 rounded-bl-lg">Popular</div>
+    {% endif %}
+
+    <div class="card-body p-6 flex flex-col">
+        <h3 class="text-2xl font-bold mb-2 {% if plan.is_featured %}text-accent{% else %}text-{{ color }}{% endif %}">{{ plan.name }}</h3>
+        <p class="text-sm text-base-content/70 mb-4 h-12">{{ plan.description }}</p>
+
+        <div class="mb-6">
+            <span class="text-4xl font-extrabold {% if plan.is_featured %}text-accent{% else %}text-{{ color }}{% endif %}">₹{{ plan.price|intcomma }}</span>
+            <span class="text-base-content/60">{{ plan.get_duration_display }}</span>
+        </div>
+
+        <div class="mb-6 flex-grow">
+            <h4 class="font-semibold mb-3 text-base-content/90">Specifications:</h4>
+            <ul class="space-y-3">
+                {% for spec in plan.specifications.all %}
+                <li class="flex items-center">
+                    <svg class="h-5 w-5 mr-3 flex-shrink-0 {% if plan.is_featured %}text-accent{% else %}text-{{ color }}{% endif %}" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span class="text-base-content/80">{{ spec.name }}</span>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="mb-6 flex-grow">
+            <h4 class="font-semibold mb-3 text-base-content/90">Features:</h4>
+            <ul class="space-y-3">
+                {% for feature in plan.features.all %}
+                <li class="flex items-center">
+                    <svg class="h-5 w-5 mr-3 flex-shrink-0 {% if plan.is_featured %}text-accent{% else %}text-{{ color }}{% endif %}" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span class="text-base-content/80">{{ feature.name }}</span>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="mt-auto">
+            <form action="{% url 'cart_add' plan.id %}" method="post" class="w-full">
+                {% csrf_token %}
+                <button type="submit" class="btn w-full {% if plan.is_featured %}btn-accent{% else %}btn-outline btn-{{ color }}{% endif %}">Buy Now</button>
+            </form>
+        </div>
+    </div>
+</div>

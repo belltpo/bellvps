@@ -4,74 +4,147 @@
 
 {% block content %}
 <div class="container mx-auto px-4 py-16 text-center">
-    <h1 class="text-3xl font-bold">Complete Your Payment</h1>
-    <p class="mt-4 text-lg">You are about to pay ₹{{ order.get_total_cost }} for order #{{ order.id }}.</p>
-    <p>Click the button below to proceed with Razorpay.</p>
+    <div class="max-w-md mx-auto bg-base-100 rounded-lg shadow-xl p-8">
+        <h1 class="text-3xl font-bold mb-4">Complete Your Payment</h1>
+        <div class="divider"></div>
+        
+        <!-- Order Summary -->
+        <div class="text-left mb-6">
+            <h3 class="text-lg font-semibold mb-2">Order Summary</h3>
+            <p><strong>Order ID:</strong> #{{ order.id }}</p>
+            <p><strong>Amount:</strong> ₹{{ order.get_total_cost|floatformat:2 }}</p>
+            <p><strong>Customer:</strong> {{ order.first_name }} {{ order.last_name }}</p>
+        </div>
+        
+        <div class="divider"></div>
+        
+        <p class="mb-6">Click the button below to proceed with secure payment via Razorpay.</p>
 
-    <div id="payment-button-container" class="mt-8">
-        <button id="rzp-button1" class="btn btn-primary btn-lg">Pay with Razorpay</button>
+        <div id="payment-button-container" class="mb-4">
+            <button id="rzp-button1" class="btn btn-primary btn-lg w-full">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                </svg>
+                Pay ₹{{ order.get_total_cost|floatformat:2 }} Securely
+            </button>
+        </div>
+
+        <div id="payment-status" class="mt-4 min-h-[2rem]"></div>
+        
+        <!-- Security badges -->
+        <div class="flex justify-center items-center gap-2 mt-6 text-sm text-gray-500">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
+            <span>Secured by Razorpay</span>
+        </div>
     </div>
 
-    <div id="payment-status" class="mt-4"></div>
-
+    <!-- Razorpay Script -->
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script>
-    var options = {
-        "key": "{{ razorpay_key_id }}",
-        "amount": "{{ amount }}", 
-        "currency": "INR",
-        "name": "BellServer",
-        "description": "VPS Plan Purchase",
-        "image": "https://www.bellglobal.in/wp-content/uploads/2021/02/New-Logo-BellGlobal.png",
-        "order_id": "{{ razorpay_order_id }}",
-        "handler": function (response){
-            var statusDiv = document.getElementById('payment-status');
-            statusDiv.innerHTML = '<p class="text-blue-500">Verifying payment...</p>';
+    // Check if Razorpay is loaded
+    if (typeof Razorpay === 'undefined') {
+        document.getElementById('payment-status').innerHTML = 
+            '<div class="alert alert-error"><span>Payment gateway failed to load. Please refresh the page.</span></div>';
+        document.getElementById('rzp-button1').disabled = true;
+    } else {
+        console.log('Razorpay loaded successfully');
+        
+        var options = {
+            "key": "{{ razorpay_key_id }}",
+            "amount": "{{ amount }}", 
+            "currency": "INR",
+            "name": "Bell Server",
+            "description": "VPS Hosting Plan Purchase",
+            "image": "https://via.placeholder.com/100x100?text=BS",
+            "order_id": "{{ razorpay_order_id }}",
+            "handler": function (response){
+                var statusDiv = document.getElementById('payment-status');
+                statusDiv.innerHTML = '<div class="alert alert-info"><span>Verifying payment...</span></div>';
+                
+                console.log('Payment response received:', response);
 
-            fetch('{% url "payment_verification" %}', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': '{{ csrf_token }}'
-                },
-                body: JSON.stringify({
-                    razorpay_payment_id: response.razorpay_payment_id,
-                    razorpay_order_id: response.razorpay_order_id,
-                    razorpay_signature: response.razorpay_signature
-                })
-            }).then(function(response) {
-                return response.json();
-            }).then(function(data) {
-                if (data.success) {
-                    window.location.href = data.redirect_url;
-                } else {
-                    window.location.href = data.redirect_url;
+                fetch('{% url "payment_verification" %}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: JSON.stringify({
+                        razorpay_payment_id: response.razorpay_payment_id,
+                        razorpay_order_id: response.razorpay_order_id,
+                        razorpay_signature: response.razorpay_signature
+                    })
+                }).then(function(response) {
+                    console.log('Verification response status:', response.status);
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok: ' + response.status);
+                    }
+                    return response.json();
+                }).then(function(data) {
+                    console.log('Verification data:', data);
+                    if (data.success) {
+                        statusDiv.innerHTML = '<div class="alert alert-success"><span>Payment verified successfully! Redirecting...</span></div>';
+                        setTimeout(function() {
+                            window.location.href = data.redirect_url;
+                        }, 1500);
+                    } else {
+                        statusDiv.innerHTML = '<div class="alert alert-error"><span>Payment verification failed. Redirecting...</span></div>';
+                        setTimeout(function() {
+                            window.location.href = data.redirect_url;
+                        }, 2000);
+                    }
+                }).catch(function(error) {
+                    console.error('Payment verification error:', error);
+                    statusDiv.innerHTML = '<div class="alert alert-error"><span>Payment verification failed: ' + error.message + '</span></div>';
+                });
+            },
+            "prefill": {
+                "name": "{{ order.first_name }} {{ order.last_name }}",
+                "email": "{{ order.email }}",
+                "contact": "{{ order.phone|default:'' }}"
+            },
+            "notes": {
+                "address": "{{ order.address }}",
+                "order_id": "{{ order.id }}"
+            },
+            "theme": {
+                "color": "#3B82F6"
+            },
+            "modal": {
+                "ondismiss": function(){
+                    console.log('Payment modal dismissed');
+                    document.getElementById('payment-status').innerHTML = 
+                        '<div class="alert alert-warning"><span>Payment was cancelled. You can try again.</span></div>';
                 }
-            }).catch(function(error) {
-                statusDiv.innerHTML = '<p class="text-red-500">An error occurred during payment verification. Please contact support.</p>';
-            });
-        },
-        "prefill": {
-            "name": "{{ order.first_name }} {{ order.last_name }}",
-            "email": "{{ order.email }}",
-            "contact": ""
-        },
-        "notes": {
-            "address": "{{ order.address }}"
-        },
-        "theme": {
-            "color": "#3399cc"
-        },
-        "modal": {
-            "ondismiss": function(){
-                window.location.href = "{% url 'payment_cancelled' order.id %}";
+            }
+        };
+        
+        var rzp1 = new Razorpay(options);
+        
+        // Handle payment button click
+        document.getElementById('rzp-button1').onclick = function(e){
+            e.preventDefault();
+            console.log('Opening Razorpay checkout');
+            document.getElementById('payment-status').innerHTML = 
+                '<div class="alert alert-info"><span>Opening payment gateway...</span></div>';
+            
+            try {
+                rzp1.open();
+            } catch (error) {
+                console.error('Error opening Razorpay:', error);
+                document.getElementById('payment-status').innerHTML = 
+                    '<div class="alert alert-error"><span>Failed to open payment gateway. Please try again.</span></div>';
             }
         }
-    };
-    var rzp1 = new Razorpay(options);
-    document.getElementById('rzp-button1').onclick = function(e){
-        rzp1.open();
-        e.preventDefault();
+        
+        // Handle payment errors
+        rzp1.on('payment.failed', function (response){
+            console.error('Payment failed:', response.error);
+            document.getElementById('payment-status').innerHTML = 
+                '<div class="alert alert-error"><span>Payment failed: ' + response.error.description + '</span></div>';
+        });
     }
     </script>
 </div>

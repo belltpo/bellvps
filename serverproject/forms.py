@@ -1,5 +1,5 @@
 from django import forms
-from .models import Order
+from .models import Order, ContactMessage
 
 class OrderCreateForm(forms.ModelForm):
     class Meta:
@@ -11,5 +11,30 @@ class OrderCreateForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         for field in self.fields:
             self.fields[field].widget.attrs.update({
-                'class': 'input input-bordered w-full'
+                'class': 'input input-bordered w-full',
+                'autocomplete': 'off'
             })
+
+class ContactForm(forms.ModelForm):
+    class Meta:
+        model = ContactMessage
+        fields = ['name', 'email', 'subject', 'message']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['name'].widget.attrs.update({
+            'class': 'input input-bordered w-full',
+            'placeholder': 'Your Name'
+        })
+        self.fields['email'].widget.attrs.update({
+            'class': 'input input-bordered w-full',
+            'placeholder': 'Your Email'
+        })
+        self.fields['subject'].widget.attrs.update({
+            'class': 'input input-bordered w-full',
+            'placeholder': 'Subject'
+        })
+        self.fields['message'].widget.attrs.update({
+            'class': 'textarea textarea-bordered w-full h-32',
+            'placeholder': 'Your Message'
+        })

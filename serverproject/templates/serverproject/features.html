@@ -4,123 +4,124 @@
 {% block title %}Features - Bell Server{% endblock %}
 
 {% block content %}
-  <!-- Page Header -->
-  <div class="pt-24 pb-8 bg-base-200">
-    <div class="container mx-auto px-4">
-      <h1 class="text-4xl font-bold text-center">
-        <span class="text-gradient bg-gradient-to-r from-primary-600 to-secondary-600">
-          Our Powerful Features
-        </span>
-      </h1>
-      <p class="text-center text-gray-800 dark:text-gray-300 mt-4 max-w-2xl mx-auto">
-        Discover why Bell Server is the preferred choice for traders and developers looking for reliable VPS solutions.
-      </p>
-    </div>
-  </div>
+<div class="bg-base-200">
+    <div class="container mx-auto px-4 py-16 sm:py-24">
 
-  <!-- Features Section -->
-  <section class="py-16 px-6 lg:px-20 bg-base-200">
-    <div class="max-w-7xl mx-auto">
-      <div class="grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-        <!-- Feature 1 -->
-        <div class="card bg-base-100 shadow-lg hover:shadow-xl transition">
-          <div class="card-body">
-            <h2 class="card-title text-xl font-bold">High-Performance Hardware</h2>
-            <p class="text-gray-800 dark:text-gray-300">Powered by latest generation CPUs and SSD storage for lightning-fast response times.</p>
-          </div>
+        <!-- Header -->
+        <div class="text-center mb-16">
+            <h1 class="text-4xl md:text-5xl font-bold">
+                Our <span class="text-primary">Powerful Features</span>
+            </h1>
+            <p class="mt-4 text-lg leading-6 text-base-content/70 max-w-3xl mx-auto">
+                Explore the cutting-edge technology and services that make Bell Server the ultimate hosting solution.
+            </p>
         </div>
-        
-        <!-- Feature 2 -->
-        <div class="card bg-base-100 shadow-lg hover:shadow-xl transition">
-          <div class="card-body">
-            <h2 class="card-title text-xl font-bold">99.9% Uptime Guarantee</h2>
-            <p class="text-gray-800 dark:text-gray-300">We guarantee that your server will be online and accessible with our robust infrastructure.</p>
-          </div>
-        </div>
-        
-        <!-- Feature 3 -->
-        <div class="card bg-base-100 shadow-lg hover:shadow-xl transition">
-          <div class="card-body">
-            <h2 class="card-title text-xl font-bold">24/7 Expert Support</h2>
-            <p class="text-gray-800 dark:text-gray-300">Our team of experts is available around the clock to assist you with any issues.</p>
-          </div>
-        </div>
-        
-        <!-- Feature 4 -->
-        <div class="card bg-base-100 shadow-lg hover:shadow-xl transition">
-          <div class="card-body">
-            <h2 class="card-title text-xl font-bold">Global Data Centers</h2>
-            <p class="text-gray-800 dark:text-gray-300">Choose from multiple data center locations to minimize latency for your users.</p>
-          </div>
-        </div>
-        
-        <!-- Feature 5 -->
-        <div class="card bg-base-100 shadow-lg hover:shadow-xl transition">
-          <div class="card-body">
-            <h2 class="card-title text-xl font-bold">Full Root Access</h2>
-            <p class="text-gray-800 dark:text-gray-300">Complete control over your server environment with full root and shell access.</p>
-          </div>
-        </div>
-        
-        <!-- Feature 6 -->
-        <div class="card bg-base-100 shadow-lg hover:shadow-xl transition">
-          <div class="card-body">
-            <h2 class="card-title text-xl font-bold">DDoS Protection</h2>
-            <p class="text-gray-800 dark:text-gray-300">Advanced DDoS mitigation to protect your server from malicious attacks.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- Technical Specifications -->
-  <section class="py-16 px-6 lg:px-20 bg-base-100">
-    <div class="max-w-4xl mx-auto">
-      <h2 class="text-3xl font-bold text-center mb-8">
-        <span class="text-gradient bg-gradient-to-r from-primary-600 to-secondary-600">
-          Technical Specifications
-        </span>
-      </h2>
-      <div class="card bg-base-200 shadow-lg">
-        <div class="card-body">
-          <div class="overflow-x-auto">
-            <table class="table w-full">
-              <thead>
-                <tr>
-                  <th class="text-lg">Component</th>
-                  <th class="text-lg">Details</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td class="font-medium">CPU</td>
-                  <td>Latest Intel Xeon / AMD EPYC processors</td>
-                </tr>
-                <tr>
-                  <td class="font-medium">Storage</td>
-                  <td>NVMe SSD storage with up to 3500MB/s read speeds</td>
-                </tr>
-                <tr>
-                  <td class="font-medium">Network</td>
-                  <td>10Gbps network with low latency connections</td>
-                </tr>
-                <tr>
-                  <td class="font-medium">Data Centers</td>
-                  <td>Multiple locations across North America, Europe, and Asia</td>
-                </tr>
-                <tr>
-                  <td class="font-medium">Operating Systems</td>
-                  <td>Ubuntu, CentOS, Debian, Windows Server, and custom images</td>
-                </tr>
-                <tr>
-                  <td class="font-medium">Control Panel</td>
-                  <td>Intuitive dashboard for easy server management</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+        <!-- Features Grid -->
+        <div class="grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-20">
+            <!-- Feature 1 -->
+            <div class="card bg-base-100 shadow-lg transition-all duration-300 hover:shadow-xl hover:transform hover:-translate-y-1" data-aos="fade-up">
+                <div class="card-body items-center text-center">
+                    <div class="bg-primary/10 text-primary rounded-full p-4 inline-flex mb-4">
+                        <svg class="h-8 w-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M4.5 12H3m18 0h-1.5m-15 3.75H3m18 0h-1.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 006.375-6.375V9.75A6.375 6.375 0 0012 3.375zM12 18.375v-2.625A3.375 3.375 0 0115.375 12H18.75a6.375 6.375 0 01-6.375 6.375zM12 3.375A6.375 6.375 0 005.625 9.75v2.25c0 .98.213 1.906.601 2.744l.399.84c.42.883.984 1.693 1.67 2.413M12 3.375c2.146 0 4.12.823 5.601 2.175m-5.601-2.175c-2.146 0-4.12.823-5.601 2.175m11.202 8.45a6.373 6.373 0 01-3.375 3.375m-7.826-3.375a6.373 6.373 0 013.375 3.375" /></svg>
+                    </div>
+                    <h2 class="card-title text-xl font-bold">High-Performance Hardware</h2>
+                    <p class="text-base-content/80">Powered by latest generation CPUs and SSD storage for lightning-fast response times.</p>
+                </div>
+            </div>
+            <!-- Feature 2 -->
+            <div class="card bg-base-100 shadow-lg transition-all duration-300 hover:shadow-xl hover:transform hover:-translate-y-1" data-aos="fade-up" data-aos-delay="100">
+                <div class="card-body items-center text-center">
+                    <div class="bg-primary/10 text-primary rounded-full p-4 inline-flex mb-4">
+                        <svg class="h-8 w-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.286zm0 13.036h.008v.008h-.008v-.008z" /></svg>
+                    </div>
+                    <h2 class="card-title text-xl font-bold">99.9% Uptime Guarantee</h2>
+                    <p class="text-base-content/80">We guarantee that your server will be online and accessible with our robust infrastructure.</p>
+                </div>
+            </div>
+            <!-- Feature 3 -->
+            <div class="card bg-base-100 shadow-lg transition-all duration-300 hover:shadow-xl hover:transform hover:-translate-y-1" data-aos="fade-up" data-aos-delay="200">
+                <div class="card-body items-center text-center">
+                    <div class="bg-primary/10 text-primary rounded-full p-4 inline-flex mb-4">
+                        <svg class="h-8 w-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18.375a6.375 6.375 0 006.375-6.375V9.75A6.375 6.375 0 0012 3.375zM12 18.375v-2.625A3.375 3.375 0 0115.375 12H18.75a6.375 6.375 0 01-6.375 6.375zM12 3.375A6.375 6.375 0 005.625 9.75v2.25c0 .98.213 1.906.601 2.744l.399.84c.42.883.984 1.693 1.67 2.413M12 3.375c2.146 0 4.12.823 5.601 2.175m-5.601-2.175c-2.146 0-4.12.823-5.601 2.175m11.202 8.45a6.373 6.373 0 01-3.375 3.375m-7.826-3.375a6.373 6.373 0 013.375 3.375" /></svg>
+                    </div>
+                    <h2 class="card-title text-xl font-bold">24/7 Expert Support</h2>
+                    <p class="text-base-content/80">Our team of experts is available around the clock to assist you with any issues.</p>
+                </div>
+            </div>
+            <!-- Feature 4 -->
+            <div class="card bg-base-100 shadow-lg transition-all duration-300 hover:shadow-xl hover:transform hover:-translate-y-1" data-aos="fade-up">
+                <div class="card-body items-center text-center">
+                    <div class="bg-primary/10 text-primary rounded-full p-4 inline-flex mb-4">
+                        <svg class="h-8 w-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9 9 0 100-18 9 9 0 000 18z" /><path stroke-linecap="round" stroke-linejoin="round" d="M12 3.75a.75.75 0 01.75.75v5.25a.75.75 0 01-1.5 0V4.5a.75.75 0 01.75-.75zM12 12a.75.75 0 01.75.75v3a.75.75 0 01-1.5 0v-3A.75.75 0 0112 12z" /></svg>
+                    </div>
+                    <h2 class="card-title text-xl font-bold">Global Data Centers</h2>
+                    <p class="text-base-content/80">Choose from multiple data center locations to minimize latency for your users.</p>
+                </div>
+            </div>
+            <!-- Feature 5 -->
+            <div class="card bg-base-100 shadow-lg transition-all duration-300 hover:shadow-xl hover:transform hover:-translate-y-1" data-aos="fade-up" data-aos-delay="100">
+                <div class="card-body items-center text-center">
+                    <div class="bg-primary/10 text-primary rounded-full p-4 inline-flex mb-4">
+                        <svg class="h-8 w-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75" /></svg>
+                    </div>
+                    <h2 class="card-title text-xl font-bold">Full Root Access</h2>
+                    <p class="text-base-content/80">Complete control over your server environment with full root and shell access.</p>
+                </div>
+            </div>
+            <!-- Feature 6 -->
+            <div class="card bg-base-100 shadow-lg transition-all duration-300 hover:shadow-xl hover:transform hover:-translate-y-1" data-aos="fade-up" data-aos-delay="200">
+                <div class="card-body items-center text-center">
+                    <div class="bg-primary/10 text-primary rounded-full p-4 inline-flex mb-4">
+                        <svg class="h-8 w-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" /></svg>
+                    </div>
+                    <h2 class="card-title text-xl font-bold">DDoS Protection</h2>
+                    <p class="text-base-content/80">Advanced DDoS mitigation to protect your server from malicious attacks.</p>
+                </div>
+            </div>
         </div>
-      </div>
+
+        <!-- Technical Specifications -->
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-base-content">Technical Specifications</h2>
+            </div>
+            <div class="card bg-base-100 shadow-lg">
+                <div class="card-body">
+                    <div class="overflow-x-auto">
+                        <table class="table table-zebra w-full">
+                            <tbody>
+                                <tr class="hover">
+                                    <td class="font-medium text-base-content/90">CPU</td>
+                                    <td class="text-base-content/80">Latest Intel Xeon / AMD EPYC processors</td>
+                                </tr>
+                                <tr class="hover">
+                                    <td class="font-medium text-base-content/90">Storage</td>
+                                    <td class="text-base-content/80">NVMe SSD storage with up to 3500MB/s read speeds</td>
+                                </tr>
+                                <tr class="hover">
+                                    <td class="font-medium text-base-content/90">Network</td>
+                                    <td class="text-base-content/80">10Gbps network with low latency connections</td>
+                                </tr>
+                                <tr class="hover">
+                                    <td class="font-medium text-base-content/90">Data Centers</td>
+                                    <td class="text-base-content/80">Multiple locations across North America, Europe, and Asia</td>
+                                </tr>
+                                <tr class="hover">
+                                    <td class="font-medium text-base-content/90">Operating Systems</td>
+                                    <td class="text-base-content/80">Ubuntu, CentOS, Debian, Windows Server, and custom images</td>
+                                </tr>
+                                <tr class="hover">
+                                    <td class="font-medium text-base-content/90">Control Panel</td>
+                                    <td class="text-base-content/80">Intuitive dashboard for easy server management</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
-  </section>
+</div>
 {% endblock %}

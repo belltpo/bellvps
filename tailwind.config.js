@@ -1,26 +1,46 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-    content: [
-      './serverproject/templates/**/*.html',
-    ],
-    theme: {
-      extend: {
-        colors: {
-          primary: {
-            50: '#f0f9ff', 100: '#e0f2fe', 200: '#bae6fd', 300: '#7dd3fc', 400: '#38bdf8',
-            500: '#0ea5e9', 600: '#0284c7', 700: '#0369a1', 800: '#075985', 900: '#0c4a6e'
-          },
-          secondary: {
-            50: '#fdf4ff', 100: '#fae8ff', 200: '#f5d0fe', 300: '#f0abfc', 400: '#e879f9',
-            500: '#d946ef', 600: '#c026d3', 700: '#a21caf', 800: '#86198f', 900: '#701a75'
-          }
-        }
-      }
+  content: [
+    "./serverproject/templates/**/*.html",
+    "./serverproject/static/**/*.js",
+  ],
+  safelist: [
+    {
+      pattern: /^(text|border|btn-outline)-(info|success|warning|secondary)$/,
     },
-    plugins: [
-      require('daisyui'),
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [require("daisyui")],
+  daisyui: {
+    themes: [
+      {
+        light: {
+          "primary": "#6366f1",          // Indigo 500
+          "secondary": "#14b8a6",        // Teal 500
+          "accent": "#f43f5e",           // Rose 500
+          "neutral": "#3d4451",
+          "base-100": "#ffffff",
+          "info": "#3abff8",
+          "success": "#36d399",
+          "warning": "#fbbd23",
+          "error": "#f87272",
+        },
+      },
+      {
+        dark: {
+          "primary": "#6366f1",          // Indigo 500
+          "secondary": "#14b8a6",        // Teal 500
+          "accent": "#f43f5e",           // Rose 500
+          "neutral": "#191d24",
+          "base-100": "#2a303c",
+          "info": "#3abff8",
+          "success": "#36d399",
+          "warning": "#fbbd23",
+          "error": "#f87272",
+        },
+      },
     ],
-    daisyui: {
-      themes: ["light", "dark"],
-    },
-  }
+  },
+};

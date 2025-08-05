@@ -1,0 +1,50 @@
+INFO 2025-08-05 09:29:52,927 views 6372 7132 Received payment verification data: {'razorpay_payment_id': 'pay_R1Vt5maZTdElxb', 'razorpay_order_id': 'order_R1VsWdLPpShYmW', 'razorpay_signature': 'afbbcdd307106e48656e0e31fb39cfb6a8e576ca04e86044dd018aff7c47a3fa'}
+INFO 2025-08-05 09:29:52,928 views 6372 7132 Order ID: order_R1VsWdLPpShYmW
+INFO 2025-08-05 09:29:52,929 views 6372 7132 Payment ID: pay_R1Vt5maZTdElxb
+INFO 2025-08-05 09:29:52,930 views 6372 7132 Signature: afbbcdd307106e48656e0e31fb39cfb6a8e576ca04e86044dd018aff7c47a3fa
+INFO 2025-08-05 09:29:52,931 views 6372 7132 Razorpay client initialized successfully
+INFO 2025-08-05 09:29:52,935 views 6372 7132 Payment signature verified successfully
+INFO 2025-08-05 09:29:52,944 views 6372 7132 Found order: 47
+INFO 2025-08-05 09:29:53,295 views 6372 7132 Order 47 updated successfully
+INFO 2025-08-05 09:29:59,511 views 6372 7132 Invoice email sent successfully for order 47
+INFO 2025-08-05 09:29:59,514 views 6372 7132 Payment verification successful for order 47
+INFO 2025-08-05 10:12:19,477 views 2764 11884 Received payment verification data: {'razorpay_payment_id': 'pay_R1WbsOotEadKg4', 'razorpay_order_id': 'order_R1WbOFH7YG1WFl', 'razorpay_signature': 'aa13faaf91d438ed41665700d2330fbcb345f6977beb4daf947f42c10a135181'}
+INFO 2025-08-05 10:12:19,477 views 2764 11884 Order ID: order_R1WbOFH7YG1WFl
+INFO 2025-08-05 10:12:19,478 views 2764 11884 Payment ID: pay_R1WbsOotEadKg4
+INFO 2025-08-05 10:12:19,478 views 2764 11884 Signature: aa13faaf91d438ed41665700d2330fbcb345f6977beb4daf947f42c10a135181
+INFO 2025-08-05 10:12:19,479 views 2764 11884 Razorpay client initialized successfully
+INFO 2025-08-05 10:12:19,480 views 2764 11884 Payment signature verified successfully
+INFO 2025-08-05 10:12:19,483 views 2764 11884 Found order: 48
+INFO 2025-08-05 10:12:19,616 views 2764 11884 Order 48 updated successfully
+INFO 2025-08-05 10:12:25,615 views 2764 11884 Invoice email sent successfully for order 48
+INFO 2025-08-05 10:12:25,617 views 2764 11884 Payment verification successful for order 48
+INFO 2025-08-05 10:20:53,119 views 1128 16204 Received payment verification data: {'razorpay_payment_id': 'pay_R1Wkz6Zy3dGJ2K', 'razorpay_order_id': 'order_R1WkZL8QzejIir', 'razorpay_signature': '25ee4b7bdb90fddb2e885110d09839b3feff34dc076a87fa8ea5c0a754a46180'}
+INFO 2025-08-05 10:20:53,119 views 1128 16204 Order ID: order_R1WkZL8QzejIir
+INFO 2025-08-05 10:20:53,120 views 1128 16204 Payment ID: pay_R1Wkz6Zy3dGJ2K
+INFO 2025-08-05 10:20:53,120 views 1128 16204 Signature: 25ee4b7bdb90fddb2e885110d09839b3feff34dc076a87fa8ea5c0a754a46180
+INFO 2025-08-05 10:20:53,121 views 1128 16204 Razorpay client initialized successfully
+INFO 2025-08-05 10:20:53,121 views 1128 16204 Payment signature verified successfully
+INFO 2025-08-05 10:20:53,129 views 1128 16204 Found order: 49
+INFO 2025-08-05 10:20:53,515 views 1128 16204 Order 49 updated successfully
+INFO 2025-08-05 10:20:53,539 views 1128 16204 Invoice email sent successfully for order 49
+INFO 2025-08-05 10:20:53,541 views 1128 16204 Payment verification successful for order 49
+INFO 2025-08-05 10:26:53,956 views 10580 9160 Received payment verification data: {'razorpay_payment_id': 'pay_R1WrH03ZCPgbmj', 'razorpay_order_id': 'order_R1WquPPhmkyFvl', 'razorpay_signature': 'f58bfb597b16a25687669fc222a146e90cd766a518d5eb20a1d7bef5a0ed2f18'}
+INFO 2025-08-05 10:26:53,957 views 10580 9160 Order ID: order_R1WquPPhmkyFvl
+INFO 2025-08-05 10:26:53,957 views 10580 9160 Payment ID: pay_R1WrH03ZCPgbmj
+INFO 2025-08-05 10:26:53,958 views 10580 9160 Signature: f58bfb597b16a25687669fc222a146e90cd766a518d5eb20a1d7bef5a0ed2f18
+INFO 2025-08-05 10:26:53,958 views 10580 9160 Razorpay client initialized successfully
+INFO 2025-08-05 10:26:53,959 views 10580 9160 Payment signature verified successfully
+INFO 2025-08-05 10:26:53,962 views 10580 9160 Found order: 50
+INFO 2025-08-05 10:26:54,339 views 10580 9160 Order 50 updated successfully
+INFO 2025-08-05 10:26:54,372 views 10580 9160 Invoice email sent successfully for order 50
+INFO 2025-08-05 10:26:54,374 views 10580 9160 Payment verification successful for order 50
+INFO 2025-08-05 10:33:38,439 views 10580 9160 Received payment verification data: {'razorpay_payment_id': 'pay_R1WyKo6Sz35Kjk', 'razorpay_order_id': 'order_R1Wxn1h9xjosPM', 'razorpay_signature': '0560e71e8b26be1f4b1b306eb93d1d67890dd916325df72b3fae28b4f657671e'}
+INFO 2025-08-05 10:33:38,440 views 10580 9160 Order ID: order_R1Wxn1h9xjosPM
+INFO 2025-08-05 10:33:38,442 views 10580 9160 Payment ID: pay_R1WyKo6Sz35Kjk
+INFO 2025-08-05 10:33:38,442 views 10580 9160 Signature: 0560e71e8b26be1f4b1b306eb93d1d67890dd916325df72b3fae28b4f657671e
+INFO 2025-08-05 10:33:38,443 views 10580 9160 Razorpay client initialized successfully
+INFO 2025-08-05 10:33:38,444 views 10580 9160 Payment signature verified successfully
+INFO 2025-08-05 10:33:38,447 views 10580 9160 Found order: 51
+INFO 2025-08-05 10:33:38,836 views 10580 9160 Order 51 updated successfully
+INFO 2025-08-05 10:33:44,816 views 10580 9160 Invoice email sent successfully for order 51
+INFO 2025-08-05 10:33:44,819 views 10580 9160 Payment verification successful for order 51

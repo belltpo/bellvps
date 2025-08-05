@@ -1,2 +1,4 @@
 Django==5.2.4
-pycryptodome
+razorpay==1.4.2
+django-import-export==4.0.0
+pycryptodome==3.12.0

@@ -5,74 +5,80 @@
 
 {% block content %}
   <!-- Page Header -->
-  <div class="pt-24 pb-8 bg-base-200">
-    <div class="container mx-auto px-4">
-      <h1 class="text-4xl font-bold text-center">
-        <span class="text-gradient bg-gradient-to-r from-primary-600 to-secondary-600">
-          Contact Our Team
-        </span>
+  <div class="pt-24 pb-12 bg-base-200">
+    <div class="container mx-auto px-4 text-center">
+      <h1 class="text-4xl md:text-5xl font-bold">
+        Contact <span class="text-primary">Our Team</span>
       </h1>
-      <p class="text-center text-gray-800 dark:text-gray-300 mt-4 max-w-2xl mx-auto">
-        Have questions or need assistance? Our team is here to help you with any inquiries about our services.
+      <p class="text-center mt-4 max-w-2xl mx-auto text-base-content/80">
+        Have a question or need support? Fill out the form below, and we'll get back to you as soon as possible.
       </p>
     </div>
   </div>
+
+  <!-- Messages Display -->
+  {% if messages %}
+    <div class="container mx-auto px-4 py-4 max-w-7xl">
+      {% for message in messages %}
+        <div class="alert alert-success shadow-lg">
+          <div>
+            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            <span>{{ message }}</span>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
 
   <!-- Contact Section -->
   <section class="py-16 px-6 lg:px-20 bg-base-200">
     <div class="max-w-7xl mx-auto">
       <div class="grid gap-12 grid-cols-1 lg:grid-cols-2">
+        
         <!-- Contact Form -->
-        <div class="card bg-base-100 shadow-lg">
+        <div class="card bg-base-100 shadow-lg" data-aos="fade-up">
           <div class="card-body">
-            <h2 class="card-title text-2xl font-bold mb-6">Send Us a Message</h2>
-            <form action="#" method="POST">
+            <h2 class="card-title text-2xl font-bold mb-4 text-primary">Send us a Message</h2>
+            <form method="post">
+              {% csrf_token %}
               <div class="form-control mb-4">
-                <label class="label">
-                  <span class="label-text">Full Name</span>
-                </label>
-                <input type="text" placeholder="John Doe" class="input input-bordered w-full" required />
+                <label class="label"><span class="label-text">{{ form.name.label|capfirst }}</span></label>
+                <input type="text" name="name" id="id_name" class="input input-bordered w-full" autocomplete="off" required>
               </div>
               <div class="form-control mb-4">
-                <label class="label">
-                  <span class="label-text">Email Address</span>
-                </label>
-                <input type="email" placeholder="john.doe@example.com" class="input input-bordered w-full" required />
+                <label class="label"><span class="label-text">{{ form.email.label|capfirst }}</span></label>
+                <input type="email" name="email" id="id_email" class="input input-bordered w-full" autocomplete="off" required>
               </div>
               <div class="form-control mb-4">
-                <label class="label">
-                  <span class="label-text">Subject</span>
-                </label>
-                <input type="text" placeholder="Inquiry about services" class="input input-bordered w-full" required />
+                <label class="label"><span class="label-text">{{ form.subject.label|capfirst }}</span></label>
+                <input type="text" name="subject" id="id_subject" class="input input-bordered w-full" autocomplete="off" required>
               </div>
               <div class="form-control mb-4">
-                <label class="label">
-                  <span class="label-text">Message</span>
-                </label>
-                <textarea class="textarea textarea-bordered h-32" placeholder="Your message here..." required></textarea>
+                <label class="label"><span class="label-text">{{ form.message.label|capfirst }}</span></label>
+                <textarea name="message" id="id_message" class="textarea textarea-bordered w-full" rows="4" autocomplete="off" required></textarea>
               </div>
-              <div class="card-actions justify-end">
-                <button type="submit" class="btn btn-primary w-full lg:w-auto">Send Message</button>
+              <div class="form-control mt-6">
+                <button type="submit" class="btn btn-accent">Send Message</button>
               </div>
             </form>
           </div>
         </div>
-        
-        <!-- Contact Information -->
+
+        <!-- Contact Information & Hours -->
         <div class="space-y-8">
-          <div class="card bg-base-100 shadow-lg">
+          <div class="card bg-base-100 shadow-lg" data-aos="fade-up" data-aos-delay="100">
             <div class="card-body">
-              <h2 class="card-title text-2xl font-bold mb-4">Contact Information</h2>
+              <h2 class="card-title text-2xl font-bold mb-4 text-primary">Contact Information</h2>
               <ul class="space-y-4">
                 <li class="flex items-start">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-4 text-primary flex-shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                   <div>
                     <h3 class="font-semibold">Address Info</h3>
-                    <p>We provide superior servers for the financial market industry to institutional and individual investors, traders & brokers.</p>
+                    <p class="text-base-content/80">We provide superior servers for the financial market industry to institutional and individual investors, traders & brokers.</p>
                   </div>
                 </li>
                 <li class="flex items-start">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-4 text-primary flex-shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
                   <div>
                     <h3 class="font-semibold">Email Us</h3>
                     <a href="mailto:helpdesk@bellglobl.in" class="link link-hover">helpdesk@bellglobl.in</a>
@@ -82,16 +88,15 @@
             </div>
           </div>
           
-          <!-- Business Hours -->
-          <div class="card bg-base-100 shadow-lg">
+          <div class="card bg-base-100 shadow-lg" data-aos="fade-up" data-aos-delay="200">
             <div class="card-body">
-              <h2 class="card-title text-2xl font-bold mb-4">Business Hours</h2>
+              <h2 class="card-title text-2xl font-bold mb-4 text-primary">Business Hours</h2>
               <div class="overflow-x-auto">
                 <table class="table w-full">
                   <tbody>
-                    <tr>
+                    <tr class="hover">
                       <td class="font-medium">Monday - Friday</td>
-                      <td>9:00 AM - 5:00 PM (PST)</td>
+                      <td>10:00 AM - 5:00 PM (IST)</td>
                     </tr>
                   </tbody>
                 </table>
@@ -99,18 +104,7 @@
             </div>
           </div>
         </div>
-      </div>
-      
-      <!-- Map -->
-      <!-- <div class="mt-12 card bg-base-100 shadow-lg">
-        <div class="card-body p-0">
-          <div class="aspect-w-16 aspect-h-9 w-full h-96 bg-gray-300 dark:bg-gray-700"> -->
-            <!-- Replace with actual map embed code -->
-            <!-- <div class="w-full h-full flex items-center justify-center">
-              <p class="text-gray-600 dark:text-gray-400">Interactive Map Would Be Embedded Here</p>
-            </div>
-          </div>
-        </div> -->
+
       </div>
     </div>
   </section>

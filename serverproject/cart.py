@@ -18,6 +18,7 @@ class Cart(object):
     def add(self, plan, quantity=1, update_quantity=False):
         """
         Add a plan to the cart or update its quantity.
+        For server plans, quantity is limited to 1.
         """
         plan_id = str(plan.id)
         if plan_id not in self.cart:
@@ -25,9 +26,13 @@ class Cart(object):
                                      'price': str(plan.price)}
         
         if update_quantity:
-            self.cart[plan_id]['quantity'] = quantity
+            # For server plans, limit quantity to 1
+            self.cart[plan_id]['quantity'] = min(quantity, 1)
         else:
-            self.cart[plan_id]['quantity'] += quantity
+            # For server plans, set quantity to 1 if not already in cart
+            if plan_id not in self.cart or self.cart[plan_id]['quantity'] == 0:
+                self.cart[plan_id]['quantity'] = 1
+            # If already in cart, don't increase quantity (keep it at 1)
         
         self.save()
 
