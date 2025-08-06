@@ -8,7 +8,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.urls import reverse
 from django.http import JsonResponse
 import json
-from razorpay.errors import SignatureVerificationError
+from razorpay import errors
 import logging
 from django.contrib import messages
 from .utils import send_invoice_email
@@ -84,44 +84,51 @@ def order_create(request):
                                        price=item['price'],
                                        quantity=item['quantity'])
             
-            # Get total cost
             total_cost = order.get_total_cost()
 
-            # Check if total cost is below Razorpay's minimum
             if total_cost < 1:
-                form.add_error(None, 'The total amount must be at least ₹1.00 to proceed with payment.')
-                # Re-add items to cart since we cleared it prematurely
-                for item in OrderItem.objects.filter(order=order):
-                    cart.add(plan=item.plan, quantity=item.quantity)
-                return render(request, 'serverproject/order_create.html', {'cart': cart, 'form': form})
+                return JsonResponse({'error': 'The total amount must be at least ₹1.00.'}, status=400)
 
             cart.clear()
 
-            # Initialize Razorpay client
-            client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+            try:
+                client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
 
-            # Create Razorpay order
-            razorpay_order = client.order.create({
-                'amount': int(total_cost * 100),  # Amount in paise
-                'currency': 'INR',
-                'receipt': f'order_rcptid_{order.id}',
-                'payment_capture': 1
-            })
+                razorpay_order = client.order.create({
+                    'amount': int(total_cost * 100),
+                    'currency': 'INR',
+                    'receipt': f'order_{order.id}',
+                    'payment_capture': 1
+                })
 
-            # Store Razorpay order ID in the order
-            order.razorpay_order_id = razorpay_order['id']
-            order.save()
+                order.razorpay_order_id = razorpay_order['id']
+                order.save()
 
-            context = {
-                'order': order,
-                'razorpay_order_id': razorpay_order['id'],
-                'razorpay_key_id': settings.RAZORPAY_KEY_ID,
-                'amount': int(total_cost * 100)
-            }
-            return render(request, 'serverproject/payment.html', context)
-    else:
+                return JsonResponse({
+                    'order_id': razorpay_order['id'],
+                    'razorpay_key_id': settings.RAZORPAY_KEY_ID,
+                    'amount': int(total_cost * 100), 
+                    'currency': 'INR',
+                    'first_name': order.first_name,
+                    'last_name': order.last_name,
+                    'email': order.email,
+                    'phone': order.phone,
+                    'address': order.address,
+                })
+            except Exception as e:
+                logger.error(f"Error creating Razorpay order: {e}")
+                return JsonResponse({'error': 'Could not connect to payment gateway.'}, status=500)
+        else:
+            return JsonResponse({'error': 'Invalid form data.', 'errors': form.errors}, status=400)
+
+    else: # GET request
         form = OrderCreateForm()
-    return render(request, 'serverproject/order_create.html', {'cart': cart, 'form': form})
+    
+    return render(request, 'serverproject/order_create.html', {
+        'cart': cart,
+        'form': form,
+        'razorpay_key_id': settings.RAZORPAY_KEY_ID
+    })
 
 @csrf_exempt
 def payment_verification(request):
@@ -191,7 +198,7 @@ def payment_verification(request):
                 logger.error(f"Order not found for razorpay_order_id: {razorpay_order_id}")
                 return JsonResponse({'success': False, 'redirect_url': reverse('payment_failed')})
 
-        except SignatureVerificationError as e:
+        except errors.SignatureVerificationError as e:
             logger.error(f"Signature Verification Failed: {e}")
             try:
                 order = Order.objects.get(razorpay_order_id=razorpay_order_id)
@@ -209,27 +216,19 @@ def payment_verification(request):
     return JsonResponse({'success': False, 'redirect_url': reverse('payment_failed')})
 
 def payment_success(request):
-    order_id = request.session.get('order_id')
-    order = get_object_or_404(Order, id=order_id) if order_id else None
-    
-    if order and order.status == 'paid':
-        # Email is already sent in payment_verification, just show success message
-        messages.success(request, 'Payment successful! Invoice has been sent to your email address.')
-    
-    return render(request, 'serverproject/payment_success.html', {'order': order})
+    return render(request, 'serverproject/payment_success.html')
 
-def payment_failed(request):
-    return render(request, 'serverproject/payment_failed.html')
+def payment_failed(request, razorpay_order_id):
+    order = get_object_or_404(Order, razorpay_order_id=razorpay_order_id)
+    order.status = 'failed'
+    order.save()
+    return render(request, 'serverproject/payment_failed.html', {'order': order})
 
-def payment_cancelled(request, order_id):
-    try:
-        order = Order.objects.get(id=order_id)
-        if order.status == 'pending': 
-            order.status = 'cancelled'
-            order.save()
-    except Order.DoesNotExist:
-        pass
-    return render(request, 'serverproject/payment_cancelled.html')
+def payment_cancelled(request, razorpay_order_id):
+    order = get_object_or_404(Order, razorpay_order_id=razorpay_order_id)
+    order.status = 'cancelled'
+    order.save()
+    return render(request, 'serverproject/payment_cancelled.html', {'order': order})
 
 def debug_razorpay(request):
     """Debug view to test Razorpay configuration"""

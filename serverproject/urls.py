@@ -13,8 +13,8 @@ urlpatterns = [
     path('order/create/', views.order_create, name='order_create'),
     path('payment/verification/', views.payment_verification, name='payment_verification'),
     path('payment/success/', views.payment_success, name='payment_success'),
-    path('payment/failed/', views.payment_failed, name='payment_failed'),
-    path('payment/cancelled/<int:order_id>/', views.payment_cancelled, name='payment_cancelled'),
+    path('payment/failed/<str:razorpay_order_id>/', views.payment_failed, name='payment_failed'),
+    path('payment/cancelled/<str:razorpay_order_id>/', views.payment_cancelled, name='payment_cancelled'),
     path('debug/razorpay/', views.debug_razorpay, name='debug_razorpay'),
 
     # Policy pages

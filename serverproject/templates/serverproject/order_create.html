@@ -117,7 +117,7 @@
                         </div>
 
                         <div class="pt-6">
-                            <button type="submit" class="btn btn-primary btn-lg w-full">
+                            <button type="submit" id="payment-button" class="btn btn-primary btn-lg w-full">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                                 </svg>
@@ -217,4 +217,99 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const paymentForm = document.querySelector('form');
+    const paymentButton = document.getElementById('payment-button');
+
+    paymentForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        paymentButton.classList.add('loading', 'btn-disabled');
+        paymentButton.innerHTML = '<span class="loading loading-spinner"></span> Processing...';
+
+        const formData = new FormData(paymentForm);
+
+        fetch('{% url "order_create" %}', {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': formData.get('csrfmiddlewaretoken'),
+            },
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                alert('Error: ' + data.error);
+                paymentButton.classList.remove('loading', 'btn-disabled');
+                paymentButton.innerHTML = 'Proceed to Secure Payment';
+                return;
+            }
+
+            const options = {
+                key: '{{ razorpay_key_id }}',
+                amount: data.amount,
+                currency: data.currency,
+                name: 'Bell Server',
+                description: 'VPS Hosting Plan',
+                image: 'https://example.com/your_logo.png',
+                order_id: data.order_id,
+                handler: function (response) {
+                    const verificationData = {
+                        razorpay_payment_id: response.razorpay_payment_id,
+                        razorpay_order_id: response.razorpay_order_id,
+                        razorpay_signature: response.razorpay_signature
+                    };
+
+                    fetch('{% url "payment_verification" %}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': formData.get('csrfmiddlewaretoken'),
+                        },
+                        body: JSON.stringify(verificationData)
+                    })
+                    .then(res => res.json())
+                    .then(verificationResult => {
+                        if (verificationResult.success) {
+                            window.location.href = verificationResult.redirect_url;
+                        } else {
+                            window.location.href = verificationResult.redirect_url;
+                        }
+                    });
+                },
+                prefill: {
+                    name: `${data.first_name} ${data.last_name}`,
+                    email: data.email,
+                    contact: data.phone
+                },
+                notes: {
+                    address: data.address
+                },
+                theme: {
+                    color: '#3399cc'
+                },
+                modal: {
+                    ondismiss: function() {
+                        paymentButton.classList.remove('loading', 'btn-disabled');
+                        paymentButton.innerHTML = 'Proceed to Secure Payment';
+                        window.location.href = `{% url 'payment_cancelled' 0 %}`.replace('0', data.order_id);
+                    }
+                }
+            };
+
+            const rzp = new Razorpay(options);
+            rzp.open();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            paymentButton.classList.remove('loading', 'btn-disabled');
+            paymentButton.innerHTML = 'Proceed to Secure Payment';
+        });
+    });
+});
+</script>
 {% endblock %}

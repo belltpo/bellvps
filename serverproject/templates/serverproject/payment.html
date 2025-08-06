@@ -142,8 +142,16 @@
         // Handle payment errors
         rzp1.on('payment.failed', function (response){
             console.error('Payment failed:', response.error);
-            document.getElementById('payment-status').innerHTML = 
-                '<div class="alert alert-error"><span>Payment failed: ' + response.error.description + '</span></div>';
+            let statusDiv = document.getElementById('payment-status');
+            statusDiv.innerHTML = 
+                `<div class="alert alert-error">
+                    <span>Payment failed: ${response.error.description}</span>
+                    <button id="retry-payment-btn" class="btn btn-sm btn-secondary ml-4">Try Again</button>
+                </div>`;
+            
+            document.getElementById('retry-payment-btn').onclick = function() {
+                rzp1.open();
+            };
         });
     }
     </script>
