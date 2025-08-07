@@ -1,72 +1,106 @@
 {% extends 'serverproject/base.html' %}
 {% load static %}
 
-{% block title %}Bell Server - High Performance VPS Hosting{% endblock %}
+{% block title %}Bellglobal Hosting - AI-Powered Hosting for Algo Traders{% endblock %}
 
 {% block content %}
+
 <!-- Hero Section -->
-<section class="bg-base-200">
-    <div class="max-w-7xl mx-auto px-6 lg:px-20 py-20 md:py-32">
-        <div class="grid md:grid-cols-2 gap-12 items-center">
-            <div class="text-center md:text-left">
-                <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 leading-tight">
-                    Powerful & Reliable <span class="text-primary">VPS Hosting</span>
-                </h1>
-                <p class="text-lg md:text-xl text-base-content/80 mb-8">
-                    Experience blazing-fast performance, 99.9% uptime, and 24/7 expert support. Get your server online in minutes.
-                </p>
-                <a href="{% url 'pricing' %}" class="btn btn-accent btn-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">Get Started</a>
-            </div>
-            <div>
-                <img src="https://images.pexels.com/photos/1148820/pexels-photo-1148820.jpeg" alt="VPS Hosting Illustration" class="w-full h-auto max-w-lg mx-auto rounded-lg shadow-lg">
-            </div>
-        </div>
+<section class="bg-base-200 py-20 lg:py-32">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8 text-center">
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 leading-tight">
+            Empowering Algo Traders with <span class="text-primary">High-Performance Hosting</span>
+        </h1>
+        <p class="text-lg md:text-xl text-base-content/80 max-w-4xl mx-auto mb-8">
+            Welcome to Bellglobal Hosting Services — your trusted infrastructure partner for intelligent and automated trading. Our servers are engineered for traders who demand low-latency, reliable, and secure environments.
+        </p>
+        <a href="{% url 'pricing' %}" class="btn btn-primary btn-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">Get Started Today</a>
     </div>
 </section>
 
-
-<!-- Features Section -->
-<section id="features" class="py-20 px-6 lg:px-20">
+<!-- AI-Powered Platform Section -->
+<section class="py-20 px-6 lg:px-8">
     <div class="max-w-7xl mx-auto">
         <div class="text-center mb-16">
-            <h2 class="text-4xl md:text-5xl font-extrabold mb-4">Why Choose Bell Server?</h2>
-            <p class="text-lg text-base-content/70 max-w-3xl mx-auto">We provide top-tier infrastructure and features to ensure your projects run smoothly and securely.</p>
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">An AI-Powered Hosting Platform Built for Traders</h2>
+            <p class="text-lg text-base-content/70 max-w-3xl mx-auto">Our servers come pre-installed with powerful AI-driven tools to support your automated trading workflow, developed in collaboration with Marketcalls and sourced from open-source repositories.</p>
         </div>
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 text-center">
+            {% with tools='openterminal,historify,Crypto-Realtime-QuestDB,sketchmaker,TradeX-chart,finnews-ai,pyindicators' %}
+            {% for tool in tools.split|slice:":7" %}
+            <div class="card bg-base-100 shadow-md hover:shadow-xl transition-shadow duration-300 p-6 rounded-lg">
+                <p class="font-semibold text-base-content">{{ tool }}</p>
+            </div>
+            {% endfor %}
+            {% endwith %}
+            <div class="card bg-base-100 shadow-md hover:shadow-xl transition-shadow duration-300 p-6 rounded-lg flex items-center justify-center">
+                <p class="font-semibold text-base-content">And more...</p>
+            </div>
+        </div>
+    </div>
+</section>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <!-- Feature 1: 99.9% Uptime -->
-            <div class="card bg-base-100 shadow-lg transition-all duration-300 hover:shadow-xl hover:transform hover:-translate-y-1">
-                <div class="card-body items-center text-center">
-                    <div class="bg-primary/10 text-primary rounded-full p-4 inline-flex mb-4">
-                        <svg class="h-8 w-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.286zm0 13.036h.008v.008h-.008v-.008z" /></svg>
-                    </div>
-                    <h2 class="card-title text-xl font-bold">99.9% Uptime</h2>
-                    <p class="text-base-content/80">Reliable service you can count on, day and night.</p>
+<!-- Your Infrastructure, Your Way Section -->
+<section class="bg-base-200 py-20 px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">Your Infrastructure, Your Way</h2>
+            <p class="text-lg text-base-content/70 max-w-3xl mx-auto">We support full flexibility in how you build and run your trading operations.</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <!-- Card 1 -->
+            <div class="card bg-base-100 text-center p-6 rounded-lg shadow-lg">
+                <h3 class="font-bold text-lg">Host Your Own Algo Platform</h3>
+            </div>
+            <!-- Card 2 -->
+            <div class="card bg-base-100 text-center p-6 rounded-lg shadow-lg">
+                <h3 class="font-bold text-lg">Connect with 20+ Brokers</h3>
+            </div>
+            <!-- Card 3 -->
+            <div class="card bg-base-100 text-center p-6 rounded-lg shadow-lg">
+                <h3 class="font-bold text-lg">Integrate with TradingView & More</h3>
+            </div>
+            <!-- Card 4 -->
+            <div class="card bg-base-100 text-center p-6 rounded-lg shadow-lg">
+                <h3 class="font-bold text-lg">Deploy in Java or Python</h3>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Why Choose Bellglobal Section -->
+<section class="py-20 px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">Why Choose Bellglobal Hosting?</h2>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Feature 1 -->
+            <div class="card bg-base-100 shadow-lg p-8 rounded-lg flex flex-row items-center gap-6">
+                <div class="bg-primary/10 text-primary rounded-full p-3"><svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.375 3.375 0 0012 18.375V19.5m-9-6.5h1m8-9.5v1m-6.364 1.636l.707.707M12 12a5 5 0 015 5H7a5 5 0 015-5z"></path></svg></div>
+                <div>
+                    <h3 class="font-bold text-lg">Optimized for Traders</h3>
+                    <p class="text-base-content/70">Low-latency and high-uptime servers for peak performance.</p>
                 </div>
             </div>
-
-            <!-- Feature 2: 24/7 Support -->
-            <div class="card bg-base-100 shadow-lg transition-all duration-300 hover:shadow-xl hover:transform hover:-translate-y-1">
-                <div class="card-body items-center text-center">
-                    <div class="bg-primary/10 text-primary rounded-full p-4 inline-flex mb-4">
-                        <svg class="h-8 w-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18.375a6.375 6.375 0 006.375-6.375V9.75A6.375 6.375 0 0012 3.375zM12 18.375v-2.625A3.375 3.375 0 0115.375 12H18.75a6.375 6.375 0 01-6.375 6.375zM12 3.375A6.375 6.375 0 005.625 9.75v2.25c0 .98.213 1.906.601 2.744l.399.84c.42.883.984 1.693 1.67 2.413M12 3.375c2.146 0 4.12.823 5.601 2.175m-5.601-2.175c-2.146 0-4.12.823-5.601 2.175m11.202 8.45a6.373 6.373 0 01-3.375 3.375m-7.826-3.375a6.373 6.373 0 013.375 3.375" /></svg>
-                    </div>
-                    <h2 class="card-title text-xl font-bold">24/7 Support</h2>
-                    <p class="text-base-content/80">Our expert team is here to help you around the clock.</p>
+            <!-- Feature 2 -->
+            <div class="card bg-base-100 shadow-lg p-8 rounded-lg flex flex-row items-center gap-6">
+                <div class="bg-primary/10 text-primary rounded-full p-3"><svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg></div>
+                <div>
+                    <h3 class="font-bold text-lg">Secure & Scalable</h3>
+                    <p class="text-base-content/70">Robust infrastructure that grows with your trading needs.</p>
                 </div>
             </div>
-
-            <!-- Feature 3: Fast SSD -->
-            <div class="card bg-base-100 shadow-lg transition-all duration-300 hover:shadow-xl hover:transform hover:-translate-y-1">
-                <div class="card-body items-center text-center">
-                    <div class="bg-primary/10 text-primary rounded-full p-4 inline-flex mb-4">
-                        <svg class="h-8 w-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M4.5 12H3m18 0h-1.5m-15 3.75H3m18 0h-1.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 00-7.5 0v2.25h7.5V6zM15.75 12a3.75 3.75 0 00-7.5 0v2.25h7.5V12zM15.75 18a3.75 3.75 0 00-7.5 0v2.25h7.5V18z" /></svg>
-                    </div>
-                    <h2 class="card-title text-xl font-bold">Fast SSD Storage</h2>
-                    <p class="text-base-content/80">Blazing-fast SSDs for superior performance and speed.</p>
+            <!-- Feature 3 -->
+            <div class="card bg-base-100 shadow-lg p-8 rounded-lg flex flex-row items-center gap-6">
+                <div class="bg-primary/10 text-primary rounded-full p-3"><svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2.086 2.086 0 00-2.086-2.086H6.658a2.086 2.086 0 00-2.086 2.086v2.086a2.086 2.086 0 002.086 2.086h10.684a2.086 2.086 0 002.086-2.086v-2.086zM12 3v10m0 0l-3-3m3 3l3-3"></path></svg></div>
+                <div>
+                    <h3 class="font-bold text-lg">Zero Bloat</h3>
+                    <p class="text-base-content/70">We provide only the trading essentials you need to succeed.</p>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
 {% endblock %}

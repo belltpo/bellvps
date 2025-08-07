@@ -4,328 +4,141 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Bell Server Invoice - Order Confirmation</title>
+    <title>Your Bell Server Invoice</title>
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            max-width: 650px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f8fafc;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #343a40;
         }
-        .email-container {
-            background-color: white;
-            border-radius: 12px;
-            padding: 40px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            border: 1px solid #e2e8f0;
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            overflow: hidden;
         }
         .header {
+            background-color: #f8f9fa;
+            padding: 20px;
             text-align: center;
-            border-bottom: 3px solid #3b82f6;
-            padding-bottom: 25px;
-            margin-bottom: 35px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            margin: -40px -40px 35px -40px;
-            padding: 40px 40px 25px 40px;
-            border-radius: 12px 12px 0 0;
+            border-bottom: 1px solid #dee2e6;
         }
-        .logo {
-            font-size: 32px;
-            font-weight: bold;
-            color: white;
-            margin-bottom: 8px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-        }
-        .tagline {
-            color: rgba(255,255,255,0.9);
-            font-size: 16px;
-            font-weight: 500;
-        }
-        .greeting {
-            font-size: 20px;
-            margin-bottom: 25px;
-            color: #1f2937;
-            font-weight: 600;
+        .header img {
+            max-width: 60px;
         }
         .content {
-            margin-bottom: 30px;
-            color: #4b5563;
+            padding: 30px;
+        }
+        .content h1 {
+            font-size: 24px;
+            color: #212529;
+            margin-top: 0;
+        }
+        .content p {
             font-size: 16px;
-        }
-        .order-summary {
-            background-color: #f8fafc;
-            border: 2px solid #e5e7eb;
-            border-radius: 10px;
-            padding: 25px;
-            margin: 30px 0;
-        }
-        .order-summary h3 {
-            color: #3b82f6;
-            margin-top: 0;
-            margin-bottom: 20px;
-            font-size: 20px;
-            font-weight: bold;
-            border-bottom: 2px solid #3b82f6;
-            padding-bottom: 10px;
-        }
-        .order-details {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 15px;
-            padding: 12px 0;
-            border-bottom: 1px solid #e5e7eb;
-        }
-        .order-details:last-child {
-            border-bottom: none;
-            font-weight: bold;
-            font-size: 18px;
-            color: #dc2626;
-            background-color: #fef2f2;
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 15px;
-        }
-        .vps-details {
-            background-color: #eff6ff;
-            border: 2px solid #3b82f6;
-            border-radius: 10px;
-            padding: 25px;
-            margin: 30px 0;
-        }
-        .vps-details h3 {
-            color: #1e40af;
-            margin-top: 0;
-            margin-bottom: 20px;
-            font-size: 20px;
-            font-weight: bold;
-        }
-        .vps-item {
-            background-color: white;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 15px;
-            border-left: 4px solid #3b82f6;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .vps-item h4 {
-            margin: 0 0 10px 0;
-            color: #1f2937;
-            font-size: 18px;
-            font-weight: bold;
-        }
-        .vps-item p {
-            margin: 5px 0;
-            color: #6b7280;
-        }
-        .vps-item .price {
-            color: #dc2626;
-            font-weight: bold;
-            font-size: 16px;
-        }
-        .next-steps {
-            background-color: #f0fdf4;
-            border: 2px solid #22c55e;
-            border-radius: 10px;
-            padding: 25px;
-            margin: 30px 0;
-        }
-        .next-steps h3 {
-            color: #16a34a;
-            margin-top: 0;
-            margin-bottom: 20px;
-            font-size: 20px;
-            font-weight: bold;
-        }
-        .next-steps ol {
-            color: #374151;
-            padding-left: 20px;
-        }
-        .next-steps li {
-            margin-bottom: 10px;
             line-height: 1.6;
         }
-        .support-section {
-            background-color: #fefce8;
-            border: 2px solid #eab308;
-            border-radius: 10px;
-            padding: 25px;
-            margin: 30px 0;
-            text-align: center;
+        .invoice-details, .customer-details {
+            margin-bottom: 20px;
         }
-        .support-section h3 {
-            color: #a16207;
-            margin-top: 0;
-            margin-bottom: 15px;
-            font-size: 20px;
+        .invoice-details table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .invoice-details th, .invoice-details td {
+            padding: 12px;
+            border-bottom: 1px solid #dee2e6;
+            text-align: left;
+        }
+        .invoice-details th {
+            background-color: #f8f9fa;
             font-weight: bold;
+            color: #495057;
         }
-        .support-section p {
-            color: #713f12;
-            margin-bottom: 15px;
-        }
-        .support-contact {
-            background-color: white;
-            border-radius: 8px;
-            padding: 15px;
-            margin-top: 15px;
-            border: 1px solid #d97706;
+        .total-row td {
+            font-weight: bold;
+            font-size: 18px;
+            border-top: 2px solid #343a40;
         }
         .footer {
+            background-color: #f8f9fa;
+            padding: 20px;
             text-align: center;
-            margin-top: 40px;
-            padding-top: 30px;
-            border-top: 2px solid #e5e7eb;
-            color: #6b7280;
-            font-size: 14px;
+            font-size: 12px;
+            color: #6c757d;
         }
-        .footer p {
-            margin: 8px 0;
-        }
-        .social-links {
-            margin: 20px 0;
-        }
-        .social-links a {
-            color: #3b82f6;
+        .button {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #0d6efd;
+            color: #ffffff;
             text-decoration: none;
-            margin: 0 10px;
-            font-weight: 500;
-        }
-        .rupee {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            border-radius: 5px;
             font-weight: bold;
-        }
-        @media only screen and (max-width: 600px) {
-            body {
-                padding: 10px;
-            }
-            .email-container {
-                padding: 20px;
-            }
-            .header {
-                margin: -20px -20px 25px -20px;
-                padding: 30px 20px 20px 20px;
-            }
-            .logo {
-                font-size: 24px;
-            }
-            .order-details {
-                flex-direction: column;
-                gap: 5px;
-            }
         }
     </style>
 </head>
 <body>
-    <div class="email-container">
-        <!-- Header with Bell Server Branding -->
-        <div class="header">
-            <img src="{{ logo_url }}" alt="Bell Server Logo" style="width: 40px; height: 40px; vertical-align: middle; margin-right: 10px;">
-            <div class="logo">Bell Server</div>
-            <div class="tagline">Premium VPS Hosting Solutions</div>
-        </div>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #f8f9fa;">
+        <tr>
+            <td align="center">
+                <table class="container" width="600" border="0" cellspacing="0" cellpadding="0">
+                    <!-- Header -->
+                    <tr>
+                        <td class="header" style="background-color: #ffffff; padding: 20px 0; border-radius: 8px;" style="background-color: #ffffff; padding: 20px 0; border-radius: 8px;">
+                            <a href="https://www.bellglobal.in" target="_blank">
+                                <img src="https://www.bellglobal.in/wp-content/uploads/2021/02/New-Logo-BellGlobal.png" alt="BellGlobal Logo" style="display: block; max-width: 180px; margin: 0 auto;">
+                            </a>
+                        </td>
+                    </tr>
+                    <!-- Content -->
+                    <tr>
+                        <td class="content">
+                            <h1>Payment Successful!</h1>
+                            <p>Dear {{ customer_name }},</p>
+                            <p>Thank you for your payment. We've attached your invoice (<b>BS-{{ order.id|stringformat:"05d" }}</b>) for your records. Your service is now being provisioned.</p>
+                            <p>Here is a summary of your order:</p>
+                            
+                            <!-- Invoice Details -->
+                            <div class="invoice-details">
+                                <table>
+                                    <tr>
+                                        <th>Service</th>
+                                        <th style="text-align: right;">Price</th>
+                                    </tr>
+                                    {% for item in order.items.all %}
+                                    <tr>
+                                        <td>{{ item.plan.name }} (Annual)</td>
+                                        <td style="text-align: right;">₹{{ item.price|floatformat:2|intcomma }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                    <tr class="total-row">
+                                        <td>Total Amount</td>
+                                        <td style="text-align: right;">₹{{ order.get_total_cost|floatformat:2|intcomma }}</td>
+                                    </tr>
+                                </table>
+                            </div>
 
-        <!-- Greeting -->
-        <div class="greeting">Dear {{ customer_name }},</div>
-
-        <!-- Main Content -->
-        <div class="content">
-            <p>Thank you for choosing Bell Server! We're excited to have you on board. Your payment has been successfully processed, and your order is now confirmed.</p>
-            
-            <p>This email serves as your official invoice and order confirmation. Please find your detailed invoice attached as a PDF document for your records.</p>
-        </div>
-
-        <!-- Order Summary -->
-        <div class="order-summary">
-            <h3>📋 Order Summary</h3>
-            
-            <div class="order-details">
-                <span><strong>Invoice Number:</strong></span>
-                <span>BS-{{ order.id|stringformat:"05d" }}</span>
-            </div>
-            <div class="order-details">
-                <span><strong>Order Date:</strong></span>
-                <span>{{ order.created|date:"F d, Y" }}</span>
-            </div>
-            <div class="order-details">
-                <span><strong>Total Amount:</strong></span>
-                <span><span class="rupee">₹</span>{{ order.get_total_cost|floatformat:0|intcomma }}</span>
-            </div>
-        </div>
-
-        <!-- VPS Details -->
-        <div class="vps-details">
-            <h3>🖥️ Your VPS Server Details</h3>
-            
-            {% for item in order.items.all %}
-            <div class="vps-item">
-                <h4>{{ item.plan.name }}</h4>
-                <p><strong>Plan Type:</strong> VPS Server Plan - {{ item.plan.get_duration_display }} Billing</p>
-                <p><strong>Quantity:</strong> {{ item.quantity }} server{{ item.quantity|pluralize }}</p>
-                <p><strong>Rate:</strong> <span class="rupee">₹</span>{{ item.price|floatformat:0|intcomma }} per server</p>
-                <p class="price"><strong>Total Cost:</strong> <span class="rupee">₹</span>{{ item.get_cost|floatformat:0|intcomma }}</p>
-            </div>
-            {% endfor %}
-        </div>
-
-        <!-- Next Steps -->
-        <div class="next-steps">
-            <h3>🚀 What Happens Next?</h3>
-            <ol>
-                <li><strong>Server Provisioning:</strong> Our technical team will begin setting up your VPS server(s) within the next 2-4 hours.</li>
-                <li><strong>Configuration:</strong> Your server will be configured with the specifications you selected and secured with industry-standard protocols.</li>
-                <li><strong>Access Credentials:</strong> You'll receive your server access credentials (IP address, login details, and control panel access) via email within 24 hours.</li>
-                <li><strong>Getting Started Guide:</strong> We'll send you a comprehensive setup guide to help you get the most out of your new VPS server.</li>
-                <li><strong>24/7 Support:</strong> Our technical support team is available around the clock to assist you with any questions or issues.</li>
-            </ol>
-        </div>
-
-        <!-- Support Section -->
-        <div class="support-section">
-            <h3>🛠️ Need Help? We're Here for You!</h3>
-            <p>Our expert support team is ready to assist you with setup, configuration, or any technical questions you may have.</p>
-            
-            <div class="support-contact">
-                <p><strong>📧 Email Support:</strong> support@bellserver.com</p>
-                <p><strong>📞 Phone Support:</strong> +91-XXX-XXX-XXXX</p>
-                <p><strong>💬 Live Chat:</strong> Available 24/7 on our website</p>
-                <p><strong>📚 Knowledge Base:</strong> docs.bellserver.com</p>
-            </div>
-        </div>
-
-        <!-- Additional Information -->
-        <div class="content">
-            <p><strong>Important Notes:</strong></p>
-            <ul>
-                <li>Keep this email and the attached PDF invoice for your records</li>
-                <li>Your Yearly billing cycle will begin once your server is activated</li>
-                <li>All servers include free setup and 24/7 monitoring</li>
-                <li>You can manage your servers through our customer portal once activated</li>
-            </ul>
-        </div>
-
-        <!-- Footer -->
-        <div class="footer">
-            <p><strong>Bell Server - Premium VPS Hosting</strong></p>
-            <p>📍 Address: 123 Tech Park, Digital City, India 560001</p>
-            <p>📧 Email: info@bellserver.com | 🌐 Website: www.bellserver.com</p>
-            <p>📞 Support: +91-XXX-XXX-XXXX | 💬 Live Chat: 24/7</p>
-            
-            <div class="social-links">
-                <a href="#">Facebook</a> |
-                <a href="#">Twitter</a> |
-                <a href="#">LinkedIn</a> |
-                <a href="#">YouTube</a>
-            </div>
-            
-            <p style="margin-top: 20px; font-size: 12px; color: #9ca3af;">
-                This email was sent to {{ order.email }} regarding your Bell Server order #BS-{{ order.id|stringformat:"05d" }}.
-                <br>
-                &copy; 2025 Bell Server. All rights reserved. | Privacy Policy | Terms of Service
-            </p>
-        </div>
-    </div>
+                            <p>You can view your full invoice in the attached PDF. If you have any questions, please don't hesitate to contact our support team.</p>
+                            <br>
+                            <p>Thanks,<br>The BellGlobal Team</p>
+                        </td>
+                    </tr>
+                    <!-- Footer -->
+                    <tr>
+                        <td class="footer">
+                            <p>&copy; {% now "Y" %} Bell Global. All rights reserved.</p>
+                            <p>BellGlobal Pvt Ltd, 123 Tech Park, Bengaluru, 560001</p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
 </body>
 </html>

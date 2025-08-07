@@ -1,5 +1,6 @@
 {% extends 'serverproject/base.html' %}
 {% load humanize %}
+{% load widget_tweaks %}
 {% block title %}Checkout - Bell Server{% endblock %}
 
 {% block content %}
@@ -40,7 +41,7 @@
                                 <label for="{{ form.broker_name.id_for_label }}" class="label">
                                     <span class="label-text">Broker Name</span>
                                 </label>
-                                {{ form.broker_name }}
+                                {{ form.broker_name|add_class:"select select-bordered w-full" }}
                             </div>
                         </div>
 
@@ -170,12 +171,7 @@
                             <span class="text-base-content/70">Setup Fee</span>
                             <span class="font-semibold text-success">Free</span>
                         </div>
-                        
-                        <div class="flex justify-between items-center py-2">
-                            <span class="text-base-content/70">Shipping</span>
-                            <span class="font-semibold text-success">Free</span>
-                        </div>
-                        
+                                                
                         <div class="flex justify-between items-center py-2">
                             <span class="text-base-content/70">Tax (GST)</span>
                             <span class="font-semibold">Included</span>

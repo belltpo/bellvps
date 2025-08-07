@@ -32,6 +32,30 @@ class Specification(models.Model):
         return self.name
 
 class Order(models.Model):
+    BROKER_CHOICES = [
+        ('5paisa', '5paisa'),
+        ('5paisa_xts', '5paisa (XTS)'),
+        ('aliceblue', 'Aliceblue'),
+        ('angelone', 'AngelOne'),
+        ('compositedge_xts', 'Compositedge (XTS)'),
+        ('dhan', 'Dhan'),
+        ('dhan_sandbox', 'Dhan (Sandbox)'),
+        ('firstock', 'Firstock'),
+        ('flattrade', 'Flattrade'),
+        ('fyers', 'Fyers'),
+        ('groww', 'Groww'),
+        ('iifl_xts', 'IIFL (XTS)'),
+        ('indiabulls', 'IndiaBulls'),
+        ('indmoney', 'IndMoney'),
+        ('kotak_securities', 'Kotak Securities'),
+        ('paytm', 'Paytm'),
+        ('pocketful', 'Pocketful'),
+        ('shoonya', 'Shoonya'),
+        ('upstox', 'Upstox'),
+        ('wisdom_capital_xts', 'Wisdom Capital (XTS)'),
+        ('zebu', 'Zebu'),
+        ('zerodha', 'Zerodha'),
+    ]
     STATUS_CHOICES = (
         ('pending', 'Pending'),
         ('paid', 'Paid'),
@@ -39,7 +63,7 @@ class Order(models.Model):
         ('cancelled', 'Cancelled'),
     )
     domain_name = models.CharField(max_length=100, blank=True)
-    broker_name = models.CharField(max_length=100, blank=True)
+    broker_name = models.CharField(max_length=100, choices=BROKER_CHOICES, default='zerodha')
     api_key = models.CharField(max_length=100, blank=True)
     api_secret = models.CharField(max_length=100, blank=True)
     first_name = models.CharField(max_length=50)

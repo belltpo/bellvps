@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'serverproject',
     'import_export',
     'django.contrib.humanize',
+    'widget_tweaks',
 ]
 
 CART_SESSION_ID = 'cart'

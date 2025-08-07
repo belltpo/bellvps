@@ -94,7 +94,6 @@
                         </div>
                         
                         <div class="flex justify-between items-center py-2">
-                            <span class="text-base-content/70">Tax (GST)</span>
                             <span class="font-semibold">Included</span>
                         </div>
                         
@@ -125,21 +124,6 @@
                             <span class="font-semibold">Secure Checkout</span>
                         </div>
                         <p class="text-xs text-base-content/60">SSL encrypted payment processing</p>
-                    </div>
-                    
-                    <!-- Quick Stats -->
-                    <div class="mt-6 p-4 bg-primary/10 rounded-lg">
-                        <div class="text-center">
-                            <p class="text-sm text-primary font-semibold mb-2">Cart Summary</p>
-                            <div class="flex justify-between text-sm">
-                                <span>VPS Servers:</span>
-                                <span class="font-semibold">{{ cart|length }}</span>
-                            </div>
-                            <div class="flex justify-between text-sm">
-                                <span>Monthly Cost:</span>
-                                <span class="font-semibold">₹{{ cart.get_total_price|floatformat:0|intcomma }}</span>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>

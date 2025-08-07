@@ -12,6 +12,11 @@ from django.conf import settings
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 import os
+import logging
+import urllib.request
+
+# Get an instance of a logger
+logger = logging.getLogger(__name__)
 
 def generate_invoice_pdf(order):
     """
@@ -32,204 +37,205 @@ def generate_invoice_pdf(order):
     
     # Define styles
     styles = getSampleStyleSheet()
-    
-    # Custom styles with proper font handling
+
+    # Register a font that supports the Rupee symbol
+    try:
+        # Assuming a 'fonts' directory exists in your static files
+        font_path = os.path.join(settings.STATIC_ROOT or os.path.join(settings.BASE_DIR, 'serverproject', 'static'), 'fonts', 'DejaVuSans.ttf')
+        if not os.path.exists(font_path):
+             # Fallback for development when STATIC_ROOT might not be collected
+            font_path = os.path.join(settings.BASE_DIR, 'serverproject', 'static', 'fonts', 'DejaVuSans.ttf')
+        pdfmetrics.registerFont(TTFont('DejaVuSans', font_path))
+        main_font = 'DejaVuSans'
+    except Exception as e:
+        logger.warning(f"Could not register 'DejaVuSans' font, falling back to Helvetica. Rupee symbol may not render. Error: {e}")
+        main_font = 'Helvetica' # Fallback font
+
+    # Custom styles for a professional look
+    try:
+        logo_url = 'https://www.bellglobal.in/wp-content/uploads/2021/02/New-Logo-BellGlobal.png'
+        with urllib.request.urlopen(logo_url) as url:
+            logo_data = url.read()
+        logo = Image(io.BytesIO(logo_data), width=1.4*inch, height=0.4*inch) # Adjusted for rectangular logo
+    except Exception as e:
+        logger.error(f"Failed to download logo for PDF, using text fallback: {e}")
+        logo = Paragraph('BellGlobal', ParagraphStyle('CompanyStyle', parent=styles['h1'], fontSize=18, leading=22, textColor=colors.HexColor('#111827'), fontName=main_font)) # Fallback to text if image fails
+
     company_style = ParagraphStyle(
         'CompanyStyle',
-        parent=styles['Heading1'],
-        fontSize=24,
-        spaceAfter=5,
-        alignment=0,  # Left alignment
-        textColor=colors.HexColor('#1e40af'),
-        fontName='Helvetica-Bold'
+        parent=styles['h1'],
+        fontName=main_font,
+        fontSize=18,
+        leading=22,
+        textColor=colors.HexColor('#111827'),
     )
     
     invoice_title_style = ParagraphStyle(
         'InvoiceTitleStyle',
-        parent=styles['Heading1'],
-        fontSize=20,
-        spaceAfter=10,
-        alignment=2,  # Right alignment
-        textColor=colors.HexColor('#dc2626'),
-        fontName='Helvetica-Bold'
+        parent=styles['h1'],
+        fontName=main_font,
+        fontSize=28,
+        textColor=colors.HexColor('#374151'),
+        alignment=2 # Right alignment
     )
-    
-    section_style = ParagraphStyle(
-        'SectionStyle',
-        parent=styles['Normal'],
-        fontSize=10,
-        spaceAfter=8,
-        fontName='Helvetica'
-    )
-    
+
     header_style = ParagraphStyle(
         'HeaderStyle',
         parent=styles['Normal'],
-        fontSize=12,
-        spaceBefore=10,
-        spaceAfter=5,
-        fontName='Helvetica-Bold',
-        textColor=colors.HexColor('#374151')
+        fontName=main_font,
+        fontSize=10,
+        textColor=colors.HexColor('#374151'),
+        spaceAfter=6
     )
-    
-    # Calculate total cost
-    total_cost = order.get_total_cost()
-    
-    # Create header table with company info and invoice details
+
+    section_style = ParagraphStyle(
+        'SectionStyle',
+        parent=styles['Normal'],
+        fontName=main_font,
+        fontSize=10,
+        leading=14,
+        textColor=colors.HexColor('#4b5563')
+    )
+
+    # --- Header Section ---
     header_data = [
-        [
-            Paragraph('<b>Bell Server</b><br/>Premium VPS Hosting Solutions<br/><br/>Bell Server Pvt Ltd<br/>123 Tech Park, Digital City<br/>Bengaluru, Karnataka 560001<br/>India<br/><br/>Email: info@bellserver.com<br/>Phone: +91-XXX-XXX-XXXX<br/>Website: www.bellserver.com<br/>GST: 29XXXXX1234X1ZX', section_style),
-            Paragraph(f'<b>INVOICE</b><br/>Invoice #: BS-{order.id:05d}<br/>Date: {order.created.strftime("%B %d, %Y")}<br/>Status: <font color="green"><b>PAID</b></font><br/><br/><b>Payment Details:</b><br/>Method: Razorpay (Online)<br/>Order ID: {order.razorpay_order_id or "N/A"}<br/>Payment ID: {order.razorpay_payment_id or "N/A"}<br/>Date: {order.created.strftime("%B %d, %Y")}', invoice_title_style)
-        ]
+        [logo, '', Paragraph('INVOICE', invoice_title_style)]
     ]
-    
-    header_table = Table(header_data, colWidths=[3.5*inch, 3.5*inch])
+    header_table = Table(header_data, colWidths=[2*inch, 3*inch, 2*inch])
     header_table.setStyle(TableStyle([
+        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+        ('LEFTPADDING', (0, 0), (-1, -1), 0),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 12),
+    ]))
+    elements.append(header_table)
+
+    # --- Invoice Details ---
+    invoice_details_data = [
+        ['', Paragraph(f'<b>Invoice #</b>: BS-{order.id:05d}<br/><b>Date</b>: {order.created.strftime("%B %d, %Y")}', section_style)]
+    ]
+    invoice_details_table = Table(invoice_details_data, colWidths=[4.5*inch, 2.5*inch])
+    invoice_details_table.setStyle(TableStyle([
+        ('ALIGN', (1, 0), (1, 0), 'RIGHT'),
         ('VALIGN', (0, 0), (-1, -1), 'TOP'),
         ('LEFTPADDING', (0, 0), (-1, -1), 0),
-        ('RIGHTPADDING', (0, 0), (-1, -1), 0),
         ('BOTTOMPADDING', (0, 0), (-1, -1), 20),
     ]))
-    
-    elements.append(header_table)
-    
+    elements.append(invoice_details_table)
+
     # Add a line separator
-    line_data = [['', '']]
-    line_table = Table(line_data, colWidths=[7*inch])
-    line_table.setStyle(TableStyle([
-        ('LINEBELOW', (0, 0), (-1, -1), 2, colors.HexColor('#e5e7eb')),
-        ('TOPPADDING', (0, 0), (-1, -1), 0),
+    line = Table([['', '']], colWidths=[7*inch], rowHeights=[2])
+    line.setStyle(TableStyle([
+        ('LINEBELOW', (0, 0), (-1, -1), 1, colors.HexColor('#e5e7eb')),
         ('BOTTOMPADDING', (0, 0), (-1, -1), 15),
     ]))
-    elements.append(line_table)
-    
-    # Billing information
-    elements.append(Paragraph('<b>BILL TO:</b>', header_style))
-    billing_info = f"""
-    {order.first_name} {order.last_name}<br/>
-    {order.email}<br/>
-    {order.address}<br/>
-    {order.city}, {order.state} {order.postal_code}<br/>
-    Phone: {order.phone}
+    elements.append(line)
+
+    # --- Billing and Company Info ---
+    billing_address = f"""
+        {order.billing_name or f'{order.first_name} {order.last_name}'}<br/>
+        {order.billing_address or order.address}<br/>
+        {order.billing_city or order.city}, {order.billing_state or order.state} {order.billing_postal_code or order.postal_code}<br/>
+        <br/>
+        <b>Email:</b> {order.email}<br/>
+        <b>Phone:</b> {order.phone}<br/>
+        <b>Broker:</b> {order.get_broker_name_display()}
     """
-    elements.append(Paragraph(billing_info, section_style))
-    elements.append(Spacer(1, 15))
-    
-    # Order items table
-    elements.append(Paragraph('<b>ORDER DETAILS:</b>', header_style))
-    
-    # Table header
-    data = [
-        ['Service Description', 'Duration', 'Quantity', 'Unit Price', 'Total Amount']
+
+    company_address = f"""
+        <b>BellGlobal</b><br/>
+        406, Ground Floor, 80 Feet Road,<br/>
+        R.K. Layout, Padmanabhnagar,<br/>
+        Bengaluru, KA, 560070<br/>
+        India<br/>
+        <br/>
+        <b>Email:</b> helpdesk@bellglobal.in<br/>
+        <b>Website:</b> www.bellglobal.in<br/>
+        <b>GSTIN:</b> 29XXXXX1234X1ZX
+    """
+
+    address_data = [
+        [Paragraph('<b>Bill To:</b>', header_style), Paragraph('<b>From:</b>', header_style)],
+        [Paragraph(billing_address, section_style), Paragraph(company_address, section_style)]
     ]
-    
-    # Add order items
-    for item in order.items.all():
-        unit_price = f"₹{item.price:,.0f}"
-        total_amount = f"₹{item.get_cost():,.0f}"
-        
-        data.append([
-            item.plan.name,
-            item.plan.get_duration_display(),
-            str(item.quantity),
-            unit_price,
-            total_amount
-        ])
-    
-    # Add subtotal and total rows
-    data.extend([
-        ['', '', '', '', ''],  # Empty row for spacing
-        ['', '', '', 'Subtotal:', f'₹{total_cost:,.0f}'],
-        ['', '', '', 'Tax (0%):', '₹0'],
-        ['', '', '', 'TOTAL:', f'₹{total_cost:,.0f}']
-    ])
-    
-    # Create table
-    table = Table(data, colWidths=[2.8*inch, 1*inch, 0.8*inch, 1.2*inch, 1.2*inch])
-    
-    # Style the table
-    table.setStyle(TableStyle([
-        # Header row
-        ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#1e40af')),
-        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
-        ('ALIGN', (0, 0), (-1, 0), 'CENTER'),
-        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-        ('FONTSIZE', (0, 0), (-1, 0), 10),
-        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
-        ('TOPPADDING', (0, 0), (-1, 0), 12),
-        
-        # Data rows
-        ('FONTNAME', (0, 1), (-1, -4), 'Helvetica'),
-        ('FONTSIZE', (0, 1), (-1, -4), 9),
-        ('ALIGN', (1, 1), (-1, -1), 'CENTER'),
-        ('ALIGN', (0, 1), (0, -1), 'LEFT'),
-        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
-        ('ROWBACKGROUNDS', (0, 1), (-1, -4), [colors.white, colors.HexColor('#f9fafb')]),
-        
-        # Total section
-        ('FONTNAME', (0, -3), (-1, -1), 'Helvetica-Bold'),
-        ('FONTSIZE', (0, -3), (-1, -1), 10),
-        ('ALIGN', (3, -3), (-1, -1), 'RIGHT'),
-        ('BACKGROUND', (0, -1), (-1, -1), colors.HexColor('#f3f4f6')),
-        ('TEXTCOLOR', (0, -1), (-1, -1), colors.HexColor('#1f2937')),
-        
-        # Grid lines
-        ('GRID', (0, 0), (-1, -4), 1, colors.HexColor('#e5e7eb')),
-        ('LINEBELOW', (0, 0), (-1, 0), 2, colors.HexColor('#1e40af')),
-        ('LINEABOVE', (0, -3), (-1, -3), 1, colors.HexColor('#d1d5db')),
-        ('LINEABOVE', (0, -1), (-1, -1), 2, colors.HexColor('#374151')),
-        
-        # Padding
-        ('LEFTPADDING', (0, 0), (-1, -1), 8),
-        ('RIGHTPADDING', (0, 0), (-1, -1), 8),
-        ('TOPPADDING', (0, 1), (-1, -1), 6),
-        ('BOTTOMPADDING', (0, 1), (-1, -1), 6),
-    ]))
-    
-    elements.append(table)
-    elements.append(Spacer(1, 20))
-    
-    # Service information in a compact format
-    service_terms_data = [
-        [
-            Paragraph('<b>Service Information:</b><br/>• VPS servers provisioned within 2-4 hours<br/>• Access credentials sent via email within 24 hours<br/>• 24/7 technical support included<br/>• Free server monitoring and basic security setup<br/>• Annual billing cycle begins upon server activation', section_style),
-            Paragraph('<b>Terms & Conditions:</b><br/>• Payment is non-refundable after service activation<br/>• Annual charges will be auto-debited from your account<br/>• 99.9% uptime guarantee with SLA protection<br/>• Fair usage policy applies to all services<br/>• For support, contact: support@bellserver.com', section_style)
-        ]
-    ]
-    
-    service_table = Table(service_terms_data, colWidths=[3.5*inch, 3.5*inch])
-    service_table.setStyle(TableStyle([
+    address_table = Table(address_data, colWidths=[3.5*inch, 3.5*inch])
+    address_table.setStyle(TableStyle([
         ('VALIGN', (0, 0), (-1, -1), 'TOP'),
         ('LEFTPADDING', (0, 0), (-1, -1), 0),
-        ('RIGHTPADDING', (0, 0), (-1, -1), 0),
-        ('TOPPADDING', (0, 0), (-1, -1), 0),
-        ('BOTTOMPADDING', (0, 0), (-1, -1), 10),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 20),
     ]))
-    
-    elements.append(service_table)
-    
-    # Footer
-    footer_style = ParagraphStyle(
-        'FooterStyle',
-        parent=styles['Normal'],
-        fontSize=9,
-        alignment=1,  # Center alignment
-        textColor=colors.HexColor('#6b7280'),
-        spaceBefore=15
-    )
-    
-    footer_text = """
-    <b>Thank you for choosing Bell Server!</b><br/>
-    For any queries regarding this invoice, please contact our support team.<br/>
-    Email: support@bellserver.com | Phone: +91-XXX-XXX-XXXX | Website: www.bellserver.com
+    elements.append(address_table)
+
+    # --- Order Items Table ---
+    items_data = [['#', 'Service Description', 'Unit Price', 'Total']]
+    for i, item in enumerate(order.items.all()):
+        item_price = f'₹{item.price:,.2f}'
+        item_total = f'₹{item.get_cost():,.2f}'
+        items_data.append([
+            str(i + 1),
+            Paragraph(f"<b>{item.plan.name}</b><br/><font size='9' color='#6b7280'>Annual Plan</font>", section_style),
+            item_price,
+            item_total
+        ])
+
+    table = Table(items_data, colWidths=[0.4*inch, 4.1*inch, 1.25*inch, 1.25*inch])
+    table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#f3f4f6')),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.HexColor('#111827')),
+        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+        ('ALIGN', (1, 1), (1, -1), 'LEFT'),
+        ('ALIGN', (-1, 1), (-1, -1), 'RIGHT'),
+        ('FONTNAME', (0, 0), (-1, -1), main_font), # Use the registered font
+        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+        ('TOPPADDING', (0, 0), (-1, 0), 12),
+        ('BOTTOMPADDING', (0, 1), (-1, -1), 8),
+        ('TOPPADDING', (0, 1), (-1, -1), 8),
+        ('GRID', (0, 0), (-1, -1), 1, colors.HexColor('#e5e7eb'))
+    ]))
+    elements.append(table)
+
+    # --- Totals Section ---
+    total_cost = order.get_total_cost()
+    totals_data = [
+        ['Subtotal', f'₹{total_cost:,.2f}'],
+        ['Tax (0%)', '₹0.00'],
+        [Paragraph('<b>Total Amount</b>', section_style), 
+         Paragraph(f'<b>₹{total_cost:,.2f}</b>', section_style)]
+    ]
+    totals_table = Table(totals_data, colWidths=[5.5*inch, 1.5*inch])
+    totals_table.setStyle(TableStyle([
+        ('ALIGN', (0, 0), (-1, -1), 'RIGHT'),
+        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+        ('FONTNAME', (0, 0), (-1, -1), main_font), # Use the registered font
+        ('LEFTPADDING', (0, 0), (-1, -1), 0),
+        ('RIGHTPADDING', (0, 0), (-1, -1), 0),
+        ('TOPPADDING', (0, 0), (-1, -1), 5),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 5),
+        ('LINEABOVE', (0, 2), (-1, 2), 1, colors.HexColor('#e5e7eb')),
+        ('TOPPADDING', (0, 2), (-1, 2), 10),
+    ]))
+    elements.append(totals_table)
+    elements.append(Spacer(1, 30))
+
+    # --- Payment Information ---
+    payment_info = f"""
+        <b>Payment Status:</b> <font color="green">PAID</font><br/>
+        <b>Payment Method:</b> Razorpay (Online)<br/>
+        <b>Order ID:</b> {order.razorpay_order_id or 'N/A'}<br/>
+        <b>Payment ID:</b> {order.razorpay_payment_id or 'N/A'}
     """
-    
-    elements.append(Paragraph(footer_text, footer_style))
-    
-    # Build PDF
+    elements.append(Paragraph('<b>Payment Details</b>', header_style))
+    elements.append(Paragraph(payment_info, section_style))
+    elements.append(Spacer(1, 30))
+
+    # --- Footer ---
+    footer_text = """
+        <b>Thank you for your business!</b><br/>
+        <font size="9" color="#6b7280">If you have any questions, please contact support at support@bellserver.com.</font>
+    """
+    elements.append(Paragraph(footer_text, ParagraphStyle('FooterStyle', parent=styles['Normal'], alignment=1, textColor=colors.HexColor('#374151'))))
+
     doc.build(elements)
     
-    # Get the value of the BytesIO buffer and return it
     pdf = buffer.getvalue()
     buffer.close()
     return pdf
@@ -249,7 +255,7 @@ def send_invoice_email(order):
         # Build absolute URL for logo (adjust domain for production)
         # For production, use something like: site_domain = 'https://www.bellserver.com'
         site_domain = 'http://127.0.0.1:8000' 
-        logo_url = site_domain + staticfiles_storage.url('images/icon.png')
+        logo_url = site_domain + staticfiles_storage.url('serverproject/images/icon.png')
 
         # Render email template
         email_html = render_to_string('serverproject/emails/invoice_email.html', {
@@ -283,9 +289,9 @@ def send_invoice_email(order):
         
         # Send email
         email.send()
+        logger.info(f"Successfully sent invoice email for order {order.id}")
         return True
         
     except Exception as e:
-        # Log error (you might want to use proper logging)
-        print(f"Error sending invoice email: {e}")
+        logger.error(f"Error sending invoice email for order {order.id}: {e}", exc_info=True)
         return False

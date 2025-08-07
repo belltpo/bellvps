@@ -183,19 +183,18 @@ def payment_verification(request):
                 cart.clear()
                 
                 # Send invoice email
-                try:
-                    send_invoice_email(order)
+                email_sent = send_invoice_email(order)
+                if email_sent:
                     logger.info(f"Invoice email sent successfully for order {order.id}")
-                except Exception as email_error:
-                    logger.error(f"Failed to send invoice email for order {order.id}: {email_error}")
-                    # Don't fail the payment if email fails
-                
+                else:
+                    logger.error(f"Failed to send invoice email for order {order.id}. Check logs for details.")
+
                 request.session['order_id'] = order.id
                 logger.info(f"Payment verification successful for order {order.id}")
                 return JsonResponse({'success': True, 'redirect_url': reverse('payment_success')})
                 
             except Order.DoesNotExist:
-                logger.error(f"Order not found for razorpay_order_id: {razorpay_order_id}")
+                logger.error(f"Order with ID {order_id} not found.")
                 return JsonResponse({'success': False, 'redirect_url': reverse('payment_failed')})
 
         except errors.SignatureVerificationError as e:

@@ -9,10 +9,12 @@ class OrderCreateForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        for field in self.fields:
-            self.fields[field].widget.attrs.update({
-                'class': 'input input-bordered w-full',
-                'autocomplete': 'off'
+        # Apply default input style to all fields
+        for field_name, field in self.fields.items():
+            field.widget.attrs.update({
+                'class': 'input input-bordered w-full input-md',
+                'autocomplete': 'off',
+                'placeholder': f'Enter {field.label.lower()}'
             })
 
 class ContactForm(forms.ModelForm):

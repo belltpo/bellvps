@@ -78,3 +78,155 @@ INFO 2025-08-06 10:50:11,281 views 4796 7556 Found order: 20
 INFO 2025-08-06 10:50:11,287 views 4796 7556 Order 20 updated successfully
 INFO 2025-08-06 10:50:17,405 views 4796 7556 Invoice email sent successfully for order 20
 INFO 2025-08-06 10:50:17,405 views 4796 7556 Payment verification successful for order 20
+INFO 2025-08-06 11:09:13,287 views 8088 16868 Received payment verification data: {"razorpay_payment_id":"pay_R1w7Ai406EoHdw","razorpay_order_id":"order_R1w6tyftu5VIwR","razorpay_signature":"af59c3c40c8ddb5e83829f2aa7896fa7d00197d3558fa9d2070c65685f0a372d"}
+INFO 2025-08-06 11:09:13,288 views 8088 16868 Order ID: order_R1w6tyftu5VIwR
+INFO 2025-08-06 11:09:13,288 views 8088 16868 Payment ID: pay_R1w7Ai406EoHdw
+INFO 2025-08-06 11:09:13,289 views 8088 16868 Signature: af59c3c40c8ddb5e83829f2aa7896fa7d00197d3558fa9d2070c65685f0a372d
+INFO 2025-08-06 11:09:13,290 views 8088 16868 Razorpay client initialized successfully
+INFO 2025-08-06 11:09:13,290 views 8088 16868 Payment signature verified successfully
+INFO 2025-08-06 11:09:13,369 views 8088 16868 Found order: 21
+INFO 2025-08-06 11:09:13,375 views 8088 16868 Order 21 updated successfully
+INFO 2025-08-06 11:09:19,042 views 8088 16868 Invoice email sent successfully for order 21
+INFO 2025-08-06 11:09:19,044 views 8088 16868 Payment verification successful for order 21
+INFO 2025-08-06 13:17:15,744 views 10496 13856 Received payment verification data: {"razorpay_payment_id":"pay_R1yIQXokStsg1J","razorpay_order_id":"order_R1yHeJvyhkQKrD","razorpay_signature":"ab8ac71301501c1f81a059c8bf17669d06527877a86859c786e7c40b7d16ebe7"}
+INFO 2025-08-06 13:17:15,746 views 10496 13856 Order ID: order_R1yHeJvyhkQKrD
+INFO 2025-08-06 13:17:15,747 views 10496 13856 Payment ID: pay_R1yIQXokStsg1J
+INFO 2025-08-06 13:17:15,751 views 10496 13856 Signature: ab8ac71301501c1f81a059c8bf17669d06527877a86859c786e7c40b7d16ebe7
+INFO 2025-08-06 13:17:15,753 views 10496 13856 Razorpay client initialized successfully
+INFO 2025-08-06 13:17:15,755 views 10496 13856 Payment signature verified successfully
+INFO 2025-08-06 13:17:15,858 views 10496 13856 Found order: 22
+INFO 2025-08-06 13:17:15,863 views 10496 13856 Order 22 updated successfully
+INFO 2025-08-06 13:17:22,120 views 10496 13856 Invoice email sent successfully for order 22
+INFO 2025-08-06 13:17:22,121 views 10496 13856 Payment verification successful for order 22
+INFO 2025-08-06 15:03:22,583 views 9988 4276 Received payment verification data: {"razorpay_payment_id":"pay_R206WCjz5m7cOu","razorpay_order_id":"order_R206626YGeIfVL","razorpay_signature":"30904dabdae3d22dfec780306ca1360578eaf889d87977760a3d55c307595d3c"}
+INFO 2025-08-06 15:03:22,584 views 9988 4276 Order ID: order_R206626YGeIfVL
+INFO 2025-08-06 15:03:22,585 views 9988 4276 Payment ID: pay_R206WCjz5m7cOu
+INFO 2025-08-06 15:03:22,585 views 9988 4276 Signature: 30904dabdae3d22dfec780306ca1360578eaf889d87977760a3d55c307595d3c
+INFO 2025-08-06 15:03:22,586 views 9988 4276 Razorpay client initialized successfully
+INFO 2025-08-06 15:03:22,587 views 9988 4276 Payment signature verified successfully
+INFO 2025-08-06 15:03:22,795 views 9988 4276 Found order: 23
+INFO 2025-08-06 15:03:22,803 views 9988 4276 Order 23 updated successfully
+INFO 2025-08-06 15:03:30,061 views 9988 4276 Invoice email sent successfully for order 23
+INFO 2025-08-06 15:03:30,063 views 9988 4276 Payment verification successful for order 23
+INFO 2025-08-06 15:55:13,416 views 10332 16652 Received payment verification data: {"razorpay_payment_id":"pay_R20zD4oLpYqm8c","razorpay_order_id":"order_R20y2DFqL1bCl0","razorpay_signature":"1aff1ba7b0742a2b764644e5bbb8e972ef6bdc3a86f1dd73f84eb76a73d2904b"}
+INFO 2025-08-06 15:55:13,417 views 10332 16652 Order ID: order_R20y2DFqL1bCl0
+INFO 2025-08-06 15:55:13,418 views 10332 16652 Payment ID: pay_R20zD4oLpYqm8c
+INFO 2025-08-06 15:55:13,418 views 10332 16652 Signature: 1aff1ba7b0742a2b764644e5bbb8e972ef6bdc3a86f1dd73f84eb76a73d2904b
+INFO 2025-08-06 15:55:13,419 views 10332 16652 Razorpay client initialized successfully
+INFO 2025-08-06 15:55:13,419 views 10332 16652 Payment signature verified successfully
+INFO 2025-08-06 15:55:13,518 views 10332 16652 Found order: 24
+INFO 2025-08-06 15:55:13,523 views 10332 16652 Order 24 updated successfully
+INFO 2025-08-06 15:55:13,528 views 10332 16652 Invoice email sent successfully for order 24
+INFO 2025-08-06 15:55:13,530 views 10332 16652 Payment verification successful for order 24
+INFO 2025-08-06 16:02:16,085 views 9732 1948 Received payment verification data: {"razorpay_payment_id":"pay_R216jqrMYxSyG5","razorpay_order_id":"order_R216TSqpcHCWuh","razorpay_signature":"f95b0659f420f9580cf8e50144ac05e6f806fb6e2627d2f087d132f4f6ddda47"}
+INFO 2025-08-06 16:02:16,086 views 9732 1948 Order ID: order_R216TSqpcHCWuh
+INFO 2025-08-06 16:02:16,086 views 9732 1948 Payment ID: pay_R216jqrMYxSyG5
+INFO 2025-08-06 16:02:16,087 views 9732 1948 Signature: f95b0659f420f9580cf8e50144ac05e6f806fb6e2627d2f087d132f4f6ddda47
+INFO 2025-08-06 16:02:16,087 views 9732 1948 Razorpay client initialized successfully
+INFO 2025-08-06 16:02:16,088 views 9732 1948 Payment signature verified successfully
+INFO 2025-08-06 16:02:16,198 views 9732 1948 Found order: 25
+INFO 2025-08-06 16:02:16,207 views 9732 1948 Order 25 updated successfully
+ERROR 2025-08-06 16:02:16,212 utils 9732 1948 Error sending invoice email for order 25: 'Order' object has no attribute 'country'
+Traceback (most recent call last):
+  File "E:\pc\pc\Bellserer-project _backup\1.8.2025 (4.15)\bellserver\bellserver\serverproject\utils.py", line 231, in send_invoice_email
+    pdf_content = generate_invoice_pdf(order)
+  File "E:\pc\pc\Bellserer-project _backup\1.8.2025 (4.15)\bellserver\bellserver\serverproject\utils.py", line 118, in generate_invoice_pdf
+    {order.country}<br/>
+     ^^^^^^^^^^^^^
+AttributeError: 'Order' object has no attribute 'country'
+INFO 2025-08-06 16:02:16,221 views 9732 1948 Invoice email sent successfully for order 25
+INFO 2025-08-06 16:02:16,222 views 9732 1948 Payment verification successful for order 25
+INFO 2025-08-06 16:05:36,398 views 7068 11084 Received payment verification data: {"razorpay_payment_id":"pay_R21AFRSa5KAyCh","razorpay_order_id":"order_R219uLSZXqYFAw","razorpay_signature":"343eccf6f19a5b56f137bad525afda032844c38a80bfe138c324d503e21a65f3"}
+INFO 2025-08-06 16:05:36,416 views 7068 11084 Order ID: order_R219uLSZXqYFAw
+INFO 2025-08-06 16:05:36,427 views 7068 11084 Payment ID: pay_R21AFRSa5KAyCh
+INFO 2025-08-06 16:05:36,429 views 7068 11084 Signature: 343eccf6f19a5b56f137bad525afda032844c38a80bfe138c324d503e21a65f3
+INFO 2025-08-06 16:05:36,431 views 7068 11084 Razorpay client initialized successfully
+INFO 2025-08-06 16:05:36,440 views 7068 11084 Payment signature verified successfully
+INFO 2025-08-06 16:05:36,564 views 7068 11084 Found order: 26
+INFO 2025-08-06 16:05:36,569 views 7068 11084 Order 26 updated successfully
+ERROR 2025-08-06 16:05:36,579 utils 7068 11084 Error sending invoice email for order 26: 'Order' object has no attribute 'country'
+Traceback (most recent call last):
+  File "E:\pc\pc\Bellserer-project _backup\1.8.2025 (4.15)\bellserver\bellserver\serverproject\utils.py", line 231, in send_invoice_email
+    pdf_content = generate_invoice_pdf(order)
+  File "E:\pc\pc\Bellserer-project _backup\1.8.2025 (4.15)\bellserver\bellserver\serverproject\utils.py", line 118, in generate_invoice_pdf
+    {order.country}<br/>
+     ^^^^^^^^^^^^^
+AttributeError: 'Order' object has no attribute 'country'
+INFO 2025-08-06 16:05:36,590 views 7068 11084 Invoice email sent successfully for order 26
+INFO 2025-08-06 16:05:36,590 views 7068 11084 Payment verification successful for order 26
+INFO 2025-08-06 16:09:09,885 views 13960 7180 Received payment verification data: {"razorpay_payment_id":"pay_R21E0dwssqAUqu","razorpay_order_id":"order_R21DiGu14Wos2X","razorpay_signature":"83df608e0ab65aeddc79c9e8aa55b90a55baf0d1dc4f7d201e7658c625662064"}
+INFO 2025-08-06 16:09:09,886 views 13960 7180 Order ID: order_R21DiGu14Wos2X
+INFO 2025-08-06 16:09:09,886 views 13960 7180 Payment ID: pay_R21E0dwssqAUqu
+INFO 2025-08-06 16:09:09,887 views 13960 7180 Signature: 83df608e0ab65aeddc79c9e8aa55b90a55baf0d1dc4f7d201e7658c625662064
+INFO 2025-08-06 16:09:09,887 views 13960 7180 Razorpay client initialized successfully
+INFO 2025-08-06 16:09:09,888 views 13960 7180 Payment signature verified successfully
+INFO 2025-08-06 16:09:09,975 views 13960 7180 Found order: 28
+INFO 2025-08-06 16:09:09,978 views 13960 7180 Order 28 updated successfully
+ERROR 2025-08-06 16:09:09,983 utils 13960 7180 Error sending invoice email for order 28: 'Order' object has no attribute 'country'
+Traceback (most recent call last):
+  File "E:\pc\pc\Bellserer-project _backup\1.8.2025 (4.15)\bellserver\bellserver\serverproject\utils.py", line 231, in send_invoice_email
+    pdf_content = generate_invoice_pdf(order)
+  File "E:\pc\pc\Bellserer-project _backup\1.8.2025 (4.15)\bellserver\bellserver\serverproject\utils.py", line 118, in generate_invoice_pdf
+    {order.country}<br/>
+     ^^^^^^^^^^^^^
+AttributeError: 'Order' object has no attribute 'country'
+ERROR 2025-08-06 16:09:09,987 views 13960 7180 Failed to send invoice email for order 28. Check logs for details.
+INFO 2025-08-06 16:09:09,988 views 13960 7180 Payment verification successful for order 28
+INFO 2025-08-06 16:12:52,036 views 6408 10616 Received payment verification data: {"razorpay_payment_id":"pay_R21Hw5qOmJzhCJ","razorpay_order_id":"order_R21HeQWEeMZ5Lz","razorpay_signature":"26c3a6ce5731578828c102a4e3bb76d3d1f227fd2bacb4633428f84f1a5fead5"}
+INFO 2025-08-06 16:12:52,036 views 6408 10616 Order ID: order_R21HeQWEeMZ5Lz
+INFO 2025-08-06 16:12:52,037 views 6408 10616 Payment ID: pay_R21Hw5qOmJzhCJ
+INFO 2025-08-06 16:12:52,037 views 6408 10616 Signature: 26c3a6ce5731578828c102a4e3bb76d3d1f227fd2bacb4633428f84f1a5fead5
+INFO 2025-08-06 16:12:52,038 views 6408 10616 Razorpay client initialized successfully
+INFO 2025-08-06 16:12:52,038 views 6408 10616 Payment signature verified successfully
+INFO 2025-08-06 16:12:52,115 views 6408 10616 Found order: 29
+INFO 2025-08-06 16:12:52,122 views 6408 10616 Order 29 updated successfully
+INFO 2025-08-06 16:12:58,181 utils 6408 10616 Successfully sent invoice email for order 29
+INFO 2025-08-06 16:12:58,182 views 6408 10616 Invoice email sent successfully for order 29
+INFO 2025-08-06 16:12:58,183 views 6408 10616 Payment verification successful for order 29
+INFO 2025-08-06 16:28:53,036 views 7284 6728 Received payment verification data: {"razorpay_payment_id":"pay_R21YqJl0XovPJ4","razorpay_order_id":"order_R21YZY8xyP2CYF","razorpay_signature":"55e4f734456ff80f63f87a8a78595defd8e8b8da87d4eb918cdf6d15e574957f"}
+INFO 2025-08-06 16:28:53,037 views 7284 6728 Order ID: order_R21YZY8xyP2CYF
+INFO 2025-08-06 16:28:53,037 views 7284 6728 Payment ID: pay_R21YqJl0XovPJ4
+INFO 2025-08-06 16:28:53,038 views 7284 6728 Signature: 55e4f734456ff80f63f87a8a78595defd8e8b8da87d4eb918cdf6d15e574957f
+INFO 2025-08-06 16:28:53,038 views 7284 6728 Razorpay client initialized successfully
+INFO 2025-08-06 16:28:53,039 views 7284 6728 Payment signature verified successfully
+INFO 2025-08-06 16:28:53,114 views 7284 6728 Found order: 30
+INFO 2025-08-06 16:28:53,118 views 7284 6728 Order 30 updated successfully
+INFO 2025-08-06 16:28:58,956 utils 7284 6728 Successfully sent invoice email for order 30
+INFO 2025-08-06 16:28:58,958 views 7284 6728 Invoice email sent successfully for order 30
+INFO 2025-08-06 16:28:58,959 views 7284 6728 Payment verification successful for order 30
+INFO 2025-08-06 16:46:10,168 views 11040 14456 Received payment verification data: {"razorpay_payment_id":"pay_R21r7LOzbsUv4h","razorpay_order_id":"order_R21qmco2XUf6SC","razorpay_signature":"cde256d05e15cd9348f12128e34533c97d4b3db730477d446885682518affe51"}
+INFO 2025-08-06 16:46:10,169 views 11040 14456 Order ID: order_R21qmco2XUf6SC
+INFO 2025-08-06 16:46:10,169 views 11040 14456 Payment ID: pay_R21r7LOzbsUv4h
+INFO 2025-08-06 16:46:10,170 views 11040 14456 Signature: cde256d05e15cd9348f12128e34533c97d4b3db730477d446885682518affe51
+INFO 2025-08-06 16:46:10,171 views 11040 14456 Razorpay client initialized successfully
+INFO 2025-08-06 16:46:10,172 views 11040 14456 Payment signature verified successfully
+INFO 2025-08-06 16:46:10,362 views 11040 14456 Found order: 32
+INFO 2025-08-06 16:46:10,366 views 11040 14456 Order 32 updated successfully
+WARNING 2025-08-06 16:46:10,397 utils 11040 14456 Could not register 'DejaVuSans' font, falling back to Helvetica. Rupee symbol may not render. Error: Can't open file "E:\pc\pc\Bellserer-project _backup\1.8.2025 (4.15)\bellserver\bellserver\serverproject\static\fonts\DejaVuSans.ttf"
+INFO 2025-08-06 16:46:16,331 utils 11040 14456 Successfully sent invoice email for order 32
+INFO 2025-08-06 16:46:16,334 views 11040 14456 Invoice email sent successfully for order 32
+INFO 2025-08-06 16:46:16,335 views 11040 14456 Payment verification successful for order 32
+INFO 2025-08-07 09:21:05,773 views 10304 13252 Received payment verification data: {"razorpay_payment_id":"pay_R2Io54M9Npzfnj","razorpay_order_id":"order_R2InXS8HAiXczn","razorpay_signature":"7be060300068e219091f6abeec81f6da3af6173d1f75256c77b621132e39ca56"}
+INFO 2025-08-07 09:21:05,773 views 10304 13252 Order ID: order_R2InXS8HAiXczn
+INFO 2025-08-07 09:21:05,774 views 10304 13252 Payment ID: pay_R2Io54M9Npzfnj
+INFO 2025-08-07 09:21:05,775 views 10304 13252 Signature: 7be060300068e219091f6abeec81f6da3af6173d1f75256c77b621132e39ca56
+INFO 2025-08-07 09:21:05,776 views 10304 13252 Razorpay client initialized successfully
+INFO 2025-08-07 09:21:05,777 views 10304 13252 Payment signature verified successfully
+INFO 2025-08-07 09:21:05,966 views 10304 13252 Found order: 33
+INFO 2025-08-07 09:21:05,973 views 10304 13252 Order 33 updated successfully
+WARNING 2025-08-07 09:21:06,035 utils 10304 13252 Could not register 'DejaVuSans' font, falling back to Helvetica. Rupee symbol may not render. Error: Can't open file "E:\pc\pc\Bellserer-project _backup\1.8.2025 (4.15)\bellserver\bellserver\serverproject\static\fonts\DejaVuSans.ttf"
+INFO 2025-08-07 09:21:13,463 utils 10304 13252 Successfully sent invoice email for order 33
+INFO 2025-08-07 09:21:13,466 views 10304 13252 Invoice email sent successfully for order 33
+INFO 2025-08-07 09:21:13,468 views 10304 13252 Payment verification successful for order 33
+INFO 2025-08-07 09:36:31,826 views 6960 1920 Received payment verification data: {"razorpay_payment_id":"pay_R2J4OOiN3NozpO","razorpay_order_id":"order_R2J3pWyzqfqHkB","razorpay_signature":"1062ef43e068c424ceb7d4dba7df2c41d84d5385a5c450d92b15b9f4053f0f64"}
+INFO 2025-08-07 09:36:31,827 views 6960 1920 Order ID: order_R2J3pWyzqfqHkB
+INFO 2025-08-07 09:36:31,828 views 6960 1920 Payment ID: pay_R2J4OOiN3NozpO
+INFO 2025-08-07 09:36:31,829 views 6960 1920 Signature: 1062ef43e068c424ceb7d4dba7df2c41d84d5385a5c450d92b15b9f4053f0f64
+INFO 2025-08-07 09:36:31,830 views 6960 1920 Razorpay client initialized successfully
+INFO 2025-08-07 09:36:31,831 views 6960 1920 Payment signature verified successfully
+INFO 2025-08-07 09:36:31,950 views 6960 1920 Found order: 34
+INFO 2025-08-07 09:36:31,958 views 6960 1920 Order 34 updated successfully
+WARNING 2025-08-07 09:36:31,964 utils 6960 1920 Could not register 'Noto Sans' font, falling back to Helvetica. Rupee symbol may not render. Error: Noto Sans font files not found in static/fonts/
+INFO 2025-08-07 09:36:38,008 utils 6960 1920 Successfully sent invoice email for order 34
+INFO 2025-08-07 09:36:38,010 views 6960 1920 Invoice email sent successfully for order 34
+INFO 2025-08-07 09:36:38,010 views 6960 1920 Payment verification successful for order 34
